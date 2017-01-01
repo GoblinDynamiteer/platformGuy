@@ -19,10 +19,11 @@ int main(int argc, char* args[]){
 					
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 	
-	guy player;
-	player.x = WINDOW_WIDTH / 2;
-	player.y = WINDOW_HEIGHT / 2;
+	player player;
+	player.position.x = WINDOW_WIDTH / 2;
+	player.position.y = WINDOW_HEIGHT / 2;
 	
+	//game loop
 	while(processEvent(window, &player)){
 		renderGame(renderer, &player);
 		//Delay 10 msec

@@ -7,8 +7,13 @@
 
 typedef struct{
 	int x,y;
+}position;
+
+typedef struct{
 	short life;
 	char *name;
-}guy;
+	position position;
+}player;
+
 
 

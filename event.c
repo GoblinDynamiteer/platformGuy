@@ -1,7 +1,7 @@
 #include "main.h"
 #include "event.h"
 
-int processEvent(SDL_Window *window, guy *player){
+int processEvent(SDL_Window *window, player *player){
 	SDL_Event event;
 	int keepPlaying = 1;
 	while(SDL_PollEvent(&event)){ //SDL_PollEvent returns true if an event shall be processed
@@ -32,23 +32,23 @@ int processEvent(SDL_Window *window, guy *player){
 	//For moving by holding key down.
 	const Uint8 *state = SDL_GetKeyboardState(NULL);
 	if(state[SDL_SCANCODE_LEFT]){
-		player->x -= MOVE_SPEED;
+		player->position.x -= MOVE_SPEED;
 	}
 	if(state[SDL_SCANCODE_RIGHT]){
-		player->x += MOVE_SPEED;
+		player->position.x += MOVE_SPEED;
 	}
 	
 	return keepPlaying;
 }
 
 
-void renderGame(SDL_Renderer *renderer, guy *player){
+void renderGame(SDL_Renderer *renderer, player *player){
 	//Draws a white rectangle on blue backgtound
 	//RGB + ALPHA
 	SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
 	SDL_RenderClear(renderer);
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-	SDL_Rect rect = { player->x, player->y, 200, 200 };
+	SDL_Rect rect = { player->position.x, player->position.y, 200, 200 };
 	SDL_RenderFillRect(renderer, &rect); 
 	SDL_RenderPresent(renderer);
 }
