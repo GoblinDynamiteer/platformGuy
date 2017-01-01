@@ -1,1 +1,1 @@
-gcc main.c -o test -lmingw32 -lSDL2main -lSDL2
+gcc main.c event.c -o platform -lmingw32 -lSDL2main -lSDL2
