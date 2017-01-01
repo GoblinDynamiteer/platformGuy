@@ -19,23 +19,12 @@ int main(int argc, char* args[]){
 					
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 	
-	while(!processEvent(window)){
-		//RGB + ALPHA
-		SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
-		
-		SDL_RenderClear(renderer);
-		
-		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-		
-		SDL_Rect rect = { 220, 140, 200, 200 };
-		SDL_RenderFillRect(renderer, &rect); 
-		
-		SDL_RenderPresent(renderer);
-		
+	while(processEvent(window)){
+		renderGame(renderer);
 		//Delay 10 msec
 		SDL_Delay(10);
 	} //End while !done loop
-
+	
 	SDL_DestroyWindow(window);
 	SDL_DestroyRenderer(renderer);
 	//Quit SDL
