@@ -1,11 +1,5 @@
-#include "SDL.h"
-#include <stdio.h>
-
-typedef struct{
-	int x,y;
-	short life;
-	char *name;
-}guy;
+#include "event.h"
+#include "main.h"
 
 int main(int argc, char* args[]){
 	
@@ -25,31 +19,7 @@ int main(int argc, char* args[]){
 					
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 	
-	int done = 0;
-	SDL_Event event;
-	
-	while(!done){
-		while(SDL_PollEvent(&event)){ //SDL_PollEvent returns true if an event shall be processed
-			switch(event.type){
-				case SDL_WINDOWEVENT_CLOSE: /**< The window manager requests that the window be closed */
-					if(window){
-						SDL_DestroyWindow(window);
-						window = NULL;
-					}
-					break;
-				case SDL_KEYDOWN:
-					switch(event.key.keysym.sym){
-						case SDLK_ESCAPE:
-							done = 1;
-							break;
-					}
-					break;
-				case SDL_QUIT:
-					done = 1;
-					break;
-			} //End switch-statements
-		} //End while event loop
-		
+	while(!processEvent(window)){
 		//RGB + ALPHA
 		SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
 		
