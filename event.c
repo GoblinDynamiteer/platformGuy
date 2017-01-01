@@ -7,9 +7,7 @@ int processEvent(SDL_Window *window, guy *player){
 	while(SDL_PollEvent(&event)){ //SDL_PollEvent returns true if an event shall be processed
 		switch(event.type){
 			case SDL_WINDOWEVENT_CLOSE:
-				printf("Closing window\n");
 				if(window){
-					
 					SDL_DestroyWindow(window);
 					window = NULL;
 				}
@@ -23,18 +21,6 @@ int processEvent(SDL_Window *window, guy *player){
 						printf("Escape Key Down\n");
 						keepPlaying = 0;
 						break;
-					case SDLK_RIGHT:
-						player->x += MOVE_SPEED;
-						break;
-					case SDLK_LEFT:
-						player->x -= MOVE_SPEED;
-						break;
-					case SDLK_DOWN:
-						player->y += MOVE_SPEED;
-						break;
-					case SDLK_UP:
-						player->y -= MOVE_SPEED;
-						break;
 				}
 				break;
 			case SDL_QUIT:
@@ -42,6 +28,16 @@ int processEvent(SDL_Window *window, guy *player){
 				break;
 		} //End switch-statements
 	} //End while event loop
+	
+	//For moving by holding key down.
+	const Uint8 *state = SDL_GetKeyboardState(NULL);
+	if(state[SDL_SCANCODE_LEFT]){
+		player->x -= MOVE_SPEED;
+	}
+	if(state[SDL_SCANCODE_RIGHT]){
+		player->x += MOVE_SPEED;
+	}
+	
 	return keepPlaying;
 }
 
