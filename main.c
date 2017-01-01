@@ -1,5 +1,5 @@
-#include "event.h"
 #include "main.h"
+#include "event.h"
 
 int main(int argc, char* args[]){
 	
@@ -13,16 +13,20 @@ int main(int argc, char* args[]){
 	window = SDL_CreateWindow("PlatformGuy", 
 					SDL_WINDOWPOS_UNDEFINED, 
 					SDL_WINDOWPOS_UNDEFINED, 
-					640, 
-					480, 
+					WINDOW_WIDTH, 
+					WINDOW_HEIGHT, 
 					0);
 					
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 	
-	while(processEvent(window)){
-		renderGame(renderer);
+	guy player;
+	player.x = WINDOW_WIDTH / 2;
+	player.y = WINDOW_HEIGHT / 2;
+	
+	while(processEvent(window, &player)){
+		renderGame(renderer, &player);
 		//Delay 10 msec
-		SDL_Delay(10);
+		SDL_Delay(5);
 	} //End while !done loop
 	
 	SDL_DestroyWindow(window);

@@ -1,4 +1,2 @@
-#include "SDL.h"
-int processEvent(SDL_Window *window);
-
-void renderGame(SDL_Renderer *renderer);
+int processEvent(SDL_Window *window, guy *player);
+void renderGame(SDL_Renderer *renderer, guy *player);
