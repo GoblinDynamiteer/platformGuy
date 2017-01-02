@@ -23,7 +23,6 @@ int processEvent(game *game){
 				break;
 			//Key has been pressed:
 			case SDL_KEYDOWN:
-				printf("Key down: %c\n", event.key.keysym.sym);
 				switch(event.key.keysym.sym){
 					//ESCAPE PRESSED
 					case SDLK_ESCAPE:
@@ -38,6 +37,8 @@ int processEvent(game *game){
 		} //End switch-statements
 	} //End while event loop
 
+	debugInfo(game);
+	
 	//For moving by holding key down.
 	const Uint8 *state = SDL_GetKeyboardState(NULL);
 	if(state[SDL_SCANCODE_LEFT]){
@@ -52,6 +53,13 @@ int processEvent(game *game){
 	if(state[SDL_SCANCODE_DOWN]){
 		gPlayer Y += MOVE_SPEED;
 	}
+	
+	//Check bomb collision
+	for(int i=0;i<BOMBS;i++){
+		SDL_Rect bombRect = {gBomb(i) X, gBomb(i) Y, 250/2, 250/2 };
+		SDL_RenderCopy(gRen, gBomb(i).texture, NULL, &bombRect);
+	}
+	
 	return keepPlaying;
 }
 
@@ -113,8 +121,8 @@ int loadGame(game * game){
 		Might be bad idea to set texture to every bomb/enemy in array... */
 	for(int i=0;i<BOMBS;i++){
 		gBomb(i).texture = SDL_CreateTextureFromSurface(gRen, surface);
-		gBomb(i) X = i * 100 + 10;
-		gBomb(i) Y = i * 50 + 10; 
+		gBomb(i) X = getRandomWidth();
+		gBomb(i) Y = getRandomHeight();
 	}
 	SDL_FreeSurface(surface); //Unload, not needed anymore
 	return 1;
