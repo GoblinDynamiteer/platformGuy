@@ -6,6 +6,7 @@
 #define WINDOW_HEIGHT 1080
 #define MOVE_SPEED 5
 
+//Positions for player and monsters etc
 typedef struct{
 	int x,y;
 }position;
@@ -17,8 +18,14 @@ typedef struct{
 }player;
 
 typedef struct{
+	SDL_Texture *texture;
+	char *name;
+	position position;
+}enemy;
+
+typedef struct{
 	player player;
-	SDL_Texture *bomb;
+	enemy bomb;
 }game;
 
 
