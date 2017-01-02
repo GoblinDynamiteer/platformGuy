@@ -17,7 +17,7 @@ int main(int argc, char* args[]){
 					WINDOW_HEIGHT, 
 					0);
 
-	// character | combines flags SDL_RENDERER_PRESENTVSYNC = VSYNC, SDL_RENDERER_ACCELERATED = GPU ACC
+	// character '|' combines flags SDL_RENDERER_PRESENTVSYNC = VSYNC, SDL_RENDERER_ACCELERATED = GPU ACC
 	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
 
 	//Starts game struct
@@ -33,7 +33,7 @@ int main(int argc, char* args[]){
 	//game loop
 	while(processEvent(&game)){
 		renderGame(&game);
-	} //End while !done loop
+	}
 
 	shutdownGame(&game);
 	return 0;
