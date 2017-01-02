@@ -26,6 +26,8 @@ typedef struct{
 typedef struct{
 	player player;
 	enemy bomb;
+	SDL_Renderer *renderer;
+	SDL_Window *window;
 }game;
 
 

@@ -22,17 +22,19 @@ int main(int argc, char* args[]){
 
 	//Starts game struct
 	game game;
+	game.renderer = renderer;
+	game.window = window;
 
-	if(!loadGame(renderer, &game)){
-		shutdownGame(window, renderer, &game);
+	if(!loadGame(&game)){
+		shutdownGame(&game);
 		return 0;
 	}
 
 	//game loop
-	while(processEvent(window, &game)){
-		renderGame(renderer, &game);
+	while(processEvent(&game)){
+		renderGame(&game);
 	} //End while !done loop
 
-	shutdownGame(window, renderer, &game);
+	shutdownGame(&game);
 	return 0;
 }

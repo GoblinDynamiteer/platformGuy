@@ -1,15 +1,15 @@
 #include "main.h"
 #include "event.h"
 
-int processEvent(SDL_Window *window, game *game){
+int processEvent(game *game){
 	SDL_Event event;
 	int keepPlaying = 1;
 	while(SDL_PollEvent(&event)){ //SDL_PollEvent returns true if an event shall be processed
 		switch(event.type){
 			case SDL_WINDOWEVENT_CLOSE:
-				if(window){
-					SDL_DestroyWindow(window);
-					window = NULL;
+				if(game -> window){
+					SDL_DestroyWindow(game -> window);
+					game -> window = NULL;
 				}
 				break;
 			//Key has been pressed:
@@ -40,36 +40,36 @@ int processEvent(SDL_Window *window, game *game){
 	return keepPlaying;
 }
 
-void renderGame(SDL_Renderer *renderer, game * game){
+void renderGame(game * game){
 	//Draws a white rectangle on blue backgtound
 	//RGB + ALPHA
-	SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
-	SDL_RenderClear(renderer);
-	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+	SDL_SetRenderDrawColor(game -> renderer, 0, 0, 255, 255);
+	SDL_RenderClear(game -> renderer);
+	SDL_SetRenderDrawColor(game -> renderer, 255, 255, 255, 255);
 	//Render bomb image
 	//Create rectangle to hold bomb image, same size as image: 250 x 250px
-	SDL_Rect bombRect = { 50, 50, 250, 250 };
-	SDL_RenderCopy(renderer, game -> bomb.texture, NULL, &bombRect);
+	SDL_Rect bombRect = { 50, 50, 250/2, 250/2 };
+	SDL_RenderCopy(game -> renderer, game -> bomb.texture, NULL, &bombRect);
 	
 	//Render "Player" rectangle
 
 	SDL_Rect rect = { game -> player.position.x, game ->player.position.y, 200, 200 };
-	SDL_RenderFillRect(renderer, &rect); 
+	SDL_RenderFillRect(game -> renderer, &rect); 
 	
-	SDL_RenderPresent(renderer);
+	SDL_RenderPresent(game -> renderer);
 }
 
 //Shuts down game, destroys windows, textures, renderer
-void shutdownGame(SDL_Window *window, SDL_Renderer *renderer, game * game){
+void shutdownGame(game * game){
 	SDL_DestroyTexture(game -> bomb.texture);
-	SDL_DestroyWindow(window);
-	SDL_DestroyRenderer(renderer);
+	SDL_DestroyWindow(game -> window);
+	SDL_DestroyRenderer(game -> renderer);
 	//Quit SDL
 	SDL_Quit();
 }
 
-//Loads game window, renderer
-int loadGame(SDL_Renderer *renderer, game * game){
+
+int loadGame(game * game){
 
 	//Player starting coordinates
 	game -> player.position.x = WINDOW_WIDTH / 2;
@@ -84,7 +84,7 @@ int loadGame(SDL_Renderer *renderer, game * game){
 		return 0;
 	}
 	//Sets image to SDL_Texture "bomb" in game struct
-	game -> bomb.texture = SDL_CreateTextureFromSurface(renderer, surface);
+	game -> bomb.texture = SDL_CreateTextureFromSurface(game -> renderer, surface);
 	SDL_FreeSurface(surface); //Unload, not needed anymore
 	return 1;
 }
