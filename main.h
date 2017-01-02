@@ -1,13 +1,14 @@
 #include "SDL.h"
 #include "SDL_image.h"
+
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 
 #define WINDOW_WIDTH 1920
 #define WINDOW_HEIGHT 1080
-#define MOVE_SPEED 5
+#define MOVE_SPEED 8
 #define BOMBS 10
-
-
 
 //Positions for player and monsters etc
 typedef struct{
@@ -33,6 +34,10 @@ typedef struct{
 	SDL_Renderer *renderer;
 	SDL_Window *window;
 }game;
+
+#include "event.h"
+#include "lib/random.h"
+#include "lib/debug.h"
 
 #define gRen game -> renderer
 #define gWin game -> window
