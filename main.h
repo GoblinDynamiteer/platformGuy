@@ -3,7 +3,7 @@
 
 #define WINDOW_WIDTH 1920
 #define WINDOW_HEIGHT 1080
-#define MOVE_SPEED 3
+#define MOVE_SPEED 5
 
 typedef struct{
 	int x,y;
@@ -15,5 +15,9 @@ typedef struct{
 	position position;
 }player;
 
+typedef struct{
+	player player;
+}game;
 
 
+ 
