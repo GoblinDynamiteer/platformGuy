@@ -1,4 +1,5 @@
 #include "SDL.h"
+#include "SDL_image.h"
 #include <stdio.h>
 
 #define WINDOW_WIDTH 1920
@@ -17,6 +18,7 @@ typedef struct{
 
 typedef struct{
 	player player;
+	SDL_Texture *bomb;
 }game;
 
 
