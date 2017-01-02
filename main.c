@@ -1,7 +1,13 @@
 #include "main.h"
-#include "event.h"
-
 int main(int argc, char* args[]){
+	//Seed random
+	srand((int)time(NULL)); 
+	
+/* 	for(int i = 0; i<300;i++){
+		printf("Wrand %d \n", rand() % WINDOW_WIDTH);
+		printf("Hrand %d \n", rand() % WINDOW_HEIGHT);
+	} */
+	
 	//Declare window and renderer
 	SDL_Window *window;
 	SDL_Renderer *renderer;
