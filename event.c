@@ -37,27 +37,46 @@ int processEvent(game *game){
 		} //End switch-statements
 	} //End while event loop
 
-	debugInfo(game);
-	
 	//For moving by holding key down.
 	const Uint8 *state = SDL_GetKeyboardState(NULL);
 	if(state[SDL_SCANCODE_LEFT]){
 		gPlayer X -= MOVE_SPEED;
+		debugInfo(game);
 	}
 	if(state[SDL_SCANCODE_RIGHT]){
 		gPlayer X += MOVE_SPEED;
+		debugInfo(game);
 	}
-	if(state[SDL_SCANCODE_UP]){
-		gPlayer Y -= MOVE_SPEED;
+	if(state[SDL_SCANCODE_UP] && !gPlayer.airborne){
+		gPlayer.airborne = 1;
+		printf("JUMP!\n");
+		printf("LANDLINE - gPlayer.jumpHeight = %d\n",LANDLINE - gPlayer.jumpHeight);
+		printf("LANDLINE - gPlayer Y = %d\n",LANDLINE - gPlayer Y);
+		while(state[SDL_SCANCODE_UP] 
+			&& LANDLINE - gPlayer.jumpHeight <= gPlayer Y){
+				gPlayer Y -= JUMP_SPEED*0.5;
+		}
+		debugInfo(game);
 	}
 	if(state[SDL_SCANCODE_DOWN]){
-		gPlayer Y += MOVE_SPEED;
+		//gPlayer Y += MOVE_SPEED;
+		debugInfo(game);
 	}
 	
-	//Check bomb collision
+	//BOMB FALLING
 	for(int i=0;i<BOMBS;i++){
-		SDL_Rect bombRect = {gBomb(i) X, gBomb(i) Y, 250/2, 250/2 };
-		SDL_RenderCopy(gRen, gBomb(i).texture, NULL, &bombRect);
+		if(gBomb(i) Y < LANDLINE){
+			gBomb(i) Y += GRAVITY;
+		}
+	}
+	
+	//PLAYER GRAVITY  - FALLING
+	if(gPlayer Y < LANDLINE){
+		gPlayer Y += GRAVITY;
+	}
+	
+	if(gPlayer Y >= LANDLINE){
+		gPlayer.airborne = 0;
 	}
 	
 	return keepPlaying;
@@ -99,7 +118,9 @@ int loadGame(game * game){
 
 	//Player starting coordinates
 	gPlayer X = 12;
-	gPlayer Y = WINDOW_HEIGHT / 2;
+	gPlayer Y = LANDLINE;
+	gPlayer.airborne = 0;
+	gPlayer.jumpHeight = 200;
 
 	SDL_Surface *surface = NULL; //For holding image
 	//Loads images
@@ -122,8 +143,9 @@ int loadGame(game * game){
 	for(int i=0;i<BOMBS;i++){
 		gBomb(i).texture = SDL_CreateTextureFromSurface(gRen, surface);
 		gBomb(i) X = getRandomWidth();
-		gBomb(i) Y = getRandomHeight();
+		gBomb(i) Y = getRandomHeight() - WINDOW_HEIGHT / 2;;
 	}
+	
 	SDL_FreeSurface(surface); //Unload, not needed anymore
-	return 1;
+	
 }
