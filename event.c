@@ -69,8 +69,8 @@ void renderGame(game * game){
 		SDL_RenderCopy(gRen, gBomb(i).texture, NULL, &bombRect);
 	}
 	//Render "Player" rectangle
-	SDL_Rect rect = {gPlayer X, gPlayer Y, 200, 200};
-	SDL_RenderFillRect(gRen, &rect); 
+	SDL_Rect playerRect = {gPlayer X, gPlayer Y, 150, 220};
+	SDL_RenderCopy(gRen, gPlayer.texture, NULL, &playerRect);
 	
 	SDL_RenderPresent(gRen);
 }
@@ -94,14 +94,23 @@ int loadGame(game * game){
 	gPlayer Y = WINDOW_HEIGHT / 2;
 
 	SDL_Surface *surface = NULL; //For holding image
-	//Loads image
+	//Loads images
+	surface = IMG_Load("art/player/guy.png");
+	if(surface == NULL){
+		printf("Can't load guy.png");
+		SDL_Quit();
+		return 0;
+	}
+	gPlayer.texture = SDL_CreateTextureFromSurface(gRen, surface);
+	
 	surface = IMG_Load("art/enemies/bomb.png");
 	if(surface == NULL){
 		printf("Can't load bomb.png");
 		SDL_Quit();
 		return 0;
 	}
-	//Sets image to SDL_Texture "bomb" in game struct
+	/* Sets image to SDL_Texture "bomb" in game struct
+		Might be bad idea to set texture to every bomb/enemy in array... */
 	for(int i=0;i<BOMBS;i++){
 		gBomb(i).texture = SDL_CreateTextureFromSurface(gRen, surface);
 		gBomb(i) X = i * 100 + 10;

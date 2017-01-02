@@ -18,6 +18,7 @@ typedef struct{
 	short life;
 	char *name;
 	position position;
+	SDL_Texture *texture;
 }player;
 
 typedef struct{
