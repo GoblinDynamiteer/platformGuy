@@ -46,13 +46,14 @@ void renderGame(game * game){
 	SDL_SetRenderDrawColor(game -> renderer, 0, 0, 255, 255);
 	SDL_RenderClear(game -> renderer);
 	SDL_SetRenderDrawColor(game -> renderer, 255, 255, 255, 255);
-	//Render bomb image
-	//Create rectangle to hold bomb image, same size as image: 250 x 250px
-	SDL_Rect bombRect = { 50, 50, 250/2, 250/2 };
-	SDL_RenderCopy(game -> renderer, game -> bomb.texture, NULL, &bombRect);
 	
+	//Render bomb images
+	//Create rectangles to hold bombs image, same size as image: 250 x 250px
+	for(int i=0;i<BOMBS;i++){
+		SDL_Rect bombRect = { game -> bomb[i].position.x, game -> bomb[i].position.y, 250/2, 250/2 };
+		SDL_RenderCopy(game -> renderer, game -> bomb[i].texture, NULL, &bombRect);
+	}
 	//Render "Player" rectangle
-
 	SDL_Rect rect = { game -> player.position.x, game ->player.position.y, 200, 200 };
 	SDL_RenderFillRect(game -> renderer, &rect); 
 	
@@ -61,7 +62,7 @@ void renderGame(game * game){
 
 //Shuts down game, destroys windows, textures, renderer
 void shutdownGame(game * game){
-	SDL_DestroyTexture(game -> bomb.texture);
+	SDL_DestroyTexture(game -> bomb[0].texture);
 	SDL_DestroyWindow(game -> window);
 	SDL_DestroyRenderer(game -> renderer);
 	//Quit SDL
@@ -84,7 +85,11 @@ int loadGame(game * game){
 		return 0;
 	}
 	//Sets image to SDL_Texture "bomb" in game struct
-	game -> bomb.texture = SDL_CreateTextureFromSurface(game -> renderer, surface);
+	for(int i=0;i<BOMBS;i++){
+		game -> bomb[i].texture = SDL_CreateTextureFromSurface(game -> renderer, surface);
+		game -> bomb[i].position.x = i * 100 + 10;
+		game -> bomb[i].position.y = i * 50 + 10; 
+	}
 	SDL_FreeSurface(surface); //Unload, not needed anymore
 	return 1;
 }

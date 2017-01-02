@@ -5,6 +5,7 @@
 #define WINDOW_WIDTH 1920
 #define WINDOW_HEIGHT 1080
 #define MOVE_SPEED 5
+#define BOMBS 10
 
 //Positions for player and monsters etc
 typedef struct{
@@ -25,7 +26,7 @@ typedef struct{
 
 typedef struct{
 	player player;
-	enemy bomb;
+	enemy bomb[BOMBS];
 	SDL_Renderer *renderer;
 	SDL_Window *window;
 }game;
