@@ -5,13 +5,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <stdbool.h>
 
 #define WINDOW_WIDTH 1920
 #define WINDOW_HEIGHT 1080
 #define LANDLINE 1080-300
 #define MOVE_SPEED 8
 #define JUMP_SPEED 20
-#define GRAVITY 7
 #define BOMBS 10
 
 //Positions for player and monsters etc
@@ -20,9 +20,18 @@ typedef struct{
 }position;
 
 typedef struct{
+	bool upKeyReleased;
+}keys;
+
+typedef struct{
+	float left, right, up, down;
+	int maxUp, maxDown;
+}velocity;
+
+typedef struct{
 	//short life;
-	short airborne;
-	short jumpHeight;
+	bool airborne;
+	velocity velocity;
 	//char *name;
 	position position;
 	SDL_Texture *texture;
@@ -40,6 +49,9 @@ typedef struct{
 	enemy bomb[BOMBS];
 	SDL_Renderer *renderer;
 	SDL_Window *window;
+	int gravity;
+	Uint32 timer;
+	keys keys;
 }game;
 
 #include "event.h"
@@ -48,7 +60,10 @@ typedef struct{
 
 #define gRen game -> renderer
 #define gWin game -> window
+#define gKey game -> keys
 #define gPlayer game -> player
+#define gGravity game -> gravity
+#define timerStart game -> timer
 #define X .position.x
 #define Y .position.y
 #define gBomb(VAR) game -> bomb[VAR]

@@ -29,6 +29,14 @@ int processEvent(game *game){
 						printf("Escape Key Down\n");
 						keepPlaying = 0;
 						break;
+					case SDLK_UP:
+						if(!gPlayer.airborne){
+							gPlayer.airborne = 1;
+							gPlayer.velocity.up = gPlayer.velocity.maxUp - 15;
+							gPlayer.velocity.down = 0;
+							gKey.upKeyReleased = 0;	
+						}
+						break;
 				}
 				break;
 			case SDL_QUIT:
@@ -39,6 +47,11 @@ int processEvent(game *game){
 
 	//For moving by holding key down.
 	const Uint8 *state = SDL_GetKeyboardState(NULL);
+	
+	if(state[SDL_SCANCODE_UP] && gPlayer.airborne){
+		gPlayer.velocity.up += 0.8f;
+	}
+	
 	if(state[SDL_SCANCODE_LEFT]){
 		gPlayer X -= MOVE_SPEED;
 		debugInfo(game);
@@ -47,17 +60,7 @@ int processEvent(game *game){
 		gPlayer X += MOVE_SPEED;
 		debugInfo(game);
 	}
-	if(state[SDL_SCANCODE_UP] && !gPlayer.airborne){
-		gPlayer.airborne = 1;
-		printf("JUMP!\n");
-		printf("LANDLINE - gPlayer.jumpHeight = %d\n",LANDLINE - gPlayer.jumpHeight);
-		printf("LANDLINE - gPlayer Y = %d\n",LANDLINE - gPlayer Y);
-		while(state[SDL_SCANCODE_UP] 
-			&& LANDLINE - gPlayer.jumpHeight <= gPlayer Y){
-				gPlayer Y -= JUMP_SPEED*0.5;
-		}
-		debugInfo(game);
-	}
+
 	if(state[SDL_SCANCODE_DOWN]){
 		//gPlayer Y += MOVE_SPEED;
 		debugInfo(game);
@@ -66,17 +69,24 @@ int processEvent(game *game){
 	//BOMB FALLING
 	for(int i=0;i<BOMBS;i++){
 		if(gBomb(i) Y < LANDLINE){
-			gBomb(i) Y += GRAVITY;
+			gBomb(i) Y += gGravity;
 		}
 	}
 	
-	//PLAYER GRAVITY  - FALLING
-	if(gPlayer Y < LANDLINE){
-		gPlayer Y += GRAVITY;
+	//PLAYER GRAVITY  - FALLING//JUMPING
+	if(gPlayer.velocity.down < gPlayer.velocity.maxDown){
+		gPlayer.velocity.down++;
+	}
+
+	gPlayer Y += gGravity - gPlayer.velocity.up + gPlayer.velocity.down;
+
+	if(gPlayer.velocity.up > 0){
+		gPlayer.velocity.up--;
 	}
 	
 	if(gPlayer Y >= LANDLINE){
 		gPlayer.airborne = 0;
+		gPlayer Y = LANDLINE;
 	}
 	
 	return keepPlaying;
@@ -92,7 +102,7 @@ void renderGame(game * game){
 	//Render bomb images
 	//Create rectangles to hold bombs image, same size as image: 250 x 250px
 	for(int i=0;i<BOMBS;i++){
-		SDL_Rect bombRect = { gBomb(i) X, gBomb(i) Y, 250/2, 250/2 };
+		SDL_Rect bombRect = {gBomb(i) X, gBomb(i) Y, 250/2, 250/2 };
 		SDL_RenderCopy(gRen, gBomb(i).texture, NULL, &bombRect);
 	}
 	//Render "Player" rectangle
@@ -120,8 +130,13 @@ int loadGame(game * game){
 	gPlayer X = 12;
 	gPlayer Y = LANDLINE;
 	gPlayer.airborne = 0;
-	gPlayer.jumpHeight = 200;
-
+	gGravity = 4;
+	gPlayer.velocity.up = 0.0f;
+	gPlayer.velocity.down = 30.0f;
+	gPlayer.velocity.maxUp = 45.0f;
+	gPlayer.velocity.maxDown = 40.0f;
+	gKey.upKeyReleased = 1;	
+	
 	SDL_Surface *surface = NULL; //For holding image
 	//Loads images
 	surface = IMG_Load("art/player/guy.png");
