@@ -7,3 +7,7 @@ int getRandomHeight(){
 int getRandomWidth(){
 	return rand() % WINDOW_WIDTH;
 }
+
+int getRandomAngle(){
+	return rand() % 360;
+}

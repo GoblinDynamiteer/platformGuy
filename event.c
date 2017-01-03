@@ -54,6 +54,7 @@ int processEvent(game *game){
 	
 	if(state[SDL_SCANCODE_LEFT]){
 		gPlayer.velocity.left+=1.5f;
+		gPlayer.flip = 0;
 		if(gPlayer.velocity.left > gPlayer.velocity.maxLeft){
 			gPlayer.velocity.left = gPlayer.velocity.maxLeft;
 		}
@@ -61,13 +62,14 @@ int processEvent(game *game){
 	
 	if(state[SDL_SCANCODE_RIGHT]){
 		gPlayer.velocity.right+=1.5f;
+		gPlayer.flip = 1;
 		if(gPlayer.velocity.right > gPlayer.velocity.maxRight){
 			gPlayer.velocity.right = gPlayer.velocity.maxRight;
 		}
 	}
-
+	gPlayer.hitbox.y = 220;
 	if(state[SDL_SCANCODE_DOWN]){
-		//gPlayer Y += MOVE_SPEED;
+		gPlayer.hitbox.y = 220/2;
 		debugInfo(game);
 	}
 	
@@ -104,8 +106,14 @@ int processEvent(game *game){
 		}
 	}
 	
+	if(gPlayer.airborne){
+		gPlayer.flip = -1;
+		gPlayer.angle = (double)getRandomAngle();
+	}
+	
 	if(gPlayer Y >= LANDLINE){
 		gPlayer.airborne = 0;
+		gPlayer.angle = 0.0;
 		gPlayer Y = LANDLINE;
 	}
 	
@@ -126,8 +134,8 @@ void renderGame(game * game){
 		SDL_RenderCopy(gRen, gBomb(i).texture, NULL, &bombRect);
 	}
 	//Render "Player" rectangle
-	SDL_Rect playerRect = {gPlayer X, gPlayer Y, 150, 220};
-	SDL_RenderCopy(gRen, gPlayer.texture, NULL, &playerRect);
+	SDL_Rect playerRect = {gPlayer X, gPlayer Y, gPlayer.hitbox.x, gPlayer.hitbox.y};
+	SDL_RenderCopyEx(gRen, gPlayer.texture, NULL, &playerRect, gPlayer.angle, NULL, gPlayer.flip);
 	
 	SDL_RenderPresent(gRen);
 }
@@ -149,7 +157,11 @@ int loadGame(game * game){
 	//Player starting coordinates
 	gPlayer X = 12;
 	gPlayer Y = LANDLINE;
+	gPlayer.hitbox.x = 150;
+	gPlayer.hitbox.y = 220;
 	gPlayer.airborne = 0;
+	gPlayer.flip = 0;
+	gPlayer.angle = 0.0f;
 	gGravity = 4;
 	gPlayer.velocity.up = 0.0f;
 	gPlayer.velocity.down = 30.0f;

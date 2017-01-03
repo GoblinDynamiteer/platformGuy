@@ -28,11 +28,18 @@ typedef struct{
 }velocity;
 
 typedef struct{
+	int x, y;
+}hitbox;
+
+typedef struct{
 	//short life;
+	short flip;
+	double angle;
 	bool airborne;
 	velocity velocity;
 	//char *name;
 	position position;
+	hitbox hitbox;
 	SDL_Texture *texture;
 }player;
 

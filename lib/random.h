@@ -3,5 +3,6 @@
 
 int getRandomHeight();
 int getRandomWidth();
+int getRandomAngle();
 
 #endif
