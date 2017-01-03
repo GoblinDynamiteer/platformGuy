@@ -10,7 +10,6 @@
 #define WINDOW_WIDTH 1920
 #define WINDOW_HEIGHT 1080
 #define LANDLINE 1080-300
-#define MOVE_SPEED 8
 #define JUMP_SPEED 20
 #define BOMBS 10
 
@@ -25,7 +24,7 @@ typedef struct{
 
 typedef struct{
 	float left, right, up, down;
-	int maxUp, maxDown;
+	float maxUp, maxDown, maxLeft, maxRight;
 }velocity;
 
 typedef struct{

@@ -53,12 +53,17 @@ int processEvent(game *game){
 	}
 	
 	if(state[SDL_SCANCODE_LEFT]){
-		gPlayer X -= MOVE_SPEED;
-		debugInfo(game);
+		gPlayer.velocity.left+=1.5f;
+		if(gPlayer.velocity.left > gPlayer.velocity.maxLeft){
+			gPlayer.velocity.left = gPlayer.velocity.maxLeft;
+		}
 	}
+	
 	if(state[SDL_SCANCODE_RIGHT]){
-		gPlayer X += MOVE_SPEED;
-		debugInfo(game);
+		gPlayer.velocity.right+=1.5f;
+		if(gPlayer.velocity.right > gPlayer.velocity.maxRight){
+			gPlayer.velocity.right = gPlayer.velocity.maxRight;
+		}
 	}
 
 	if(state[SDL_SCANCODE_DOWN]){
@@ -73,15 +78,30 @@ int processEvent(game *game){
 		}
 	}
 	
-	//PLAYER GRAVITY  - FALLING//JUMPING
+	//PLAYER GRAVITY//Movement  - FALLING//JUMPING
 	if(gPlayer.velocity.down < gPlayer.velocity.maxDown){
 		gPlayer.velocity.down++;
 	}
 
 	gPlayer Y += gGravity - gPlayer.velocity.up + gPlayer.velocity.down;
+	gPlayer X += gPlayer.velocity.right - gPlayer.velocity.left;
 
 	if(gPlayer.velocity.up > 0){
 		gPlayer.velocity.up--;
+	}
+	
+	if(gPlayer.velocity.left > 0){
+		gPlayer.velocity.left -= 0.2f;
+		if(gPlayer.velocity.left < 0){
+			gPlayer.velocity.left = 0.0f;
+		}
+	}
+	
+	if(gPlayer.velocity.right > 0){
+		gPlayer.velocity.right -= 0.2f;
+		if(gPlayer.velocity.right < 0){
+			gPlayer.velocity.right = 0.0f;
+		}
 	}
 	
 	if(gPlayer Y >= LANDLINE){
@@ -133,8 +153,12 @@ int loadGame(game * game){
 	gGravity = 4;
 	gPlayer.velocity.up = 0.0f;
 	gPlayer.velocity.down = 30.0f;
+	gPlayer.velocity.left = 0.0f;
+	gPlayer.velocity.right = 0.0f;
 	gPlayer.velocity.maxUp = 45.0f;
 	gPlayer.velocity.maxDown = 40.0f;
+	gPlayer.velocity.maxLeft = 8.0f;
+	gPlayer.velocity.maxRight = 8.0f;
 	gKey.upKeyReleased = 1;	
 	
 	SDL_Surface *surface = NULL; //For holding image
