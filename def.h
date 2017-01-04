@@ -32,9 +32,10 @@
 /* Player Status flags */
 #define AIRBORNE 1		// 0001
 #define FACINGLEFT 2	// 0010
+#define ALIVE 4			// 0100
 #define STARTINGSTATUS 0
 
-typedef unsigned long long ull;
+typedef unsigned long long U64;
 
 /* STRUCTS */
 //Positions for player and monsters etc
@@ -59,7 +60,7 @@ typedef struct{
 	//short life;
 	short flip;
 	double angle;
-	ull status;
+	U64 status; //Airborne, facing, alive etc
 	bool airborne;
 	velocity velocity;
 	//char *name;
@@ -101,6 +102,9 @@ int loadGame(game * game);
 int processEvent(game *game);
 void renderGame(game * game);
 void shutdownGame(game * game);
+
+//status.c
+bool getStatus(game * game, int check);
 
 
 /* END GUARD */

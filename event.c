@@ -144,13 +144,15 @@ void shutdownGame(game * game){
 
 int loadGame(game * game){
 
+	gPlayer.status = 0;
+	gPlayer.status |= ALIVE;
 	//Player starting coordinates
 	gPlayer X = 12;
 	gPlayer Y = LANDLINE;
 	gPlayer.hitbox.x = 150;
 	gPlayer.hitbox.y = 220;
-	gPlayer.airborne = 0;
-	gPlayer.flip = 0;
+	//gPlayer.airborne = 0;
+	//gPlayer.flip = 0;
 	gPlayer.angle = 0.0f;
 	gGravity = 4;
 	gPlayer.velocity.up = 0.0f;
