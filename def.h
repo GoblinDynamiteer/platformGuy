@@ -1,3 +1,7 @@
+#ifndef DEF_H
+#define DEF_H
+
+/* INCLUDES */
 #include "SDL.h"
 #include "SDL_image.h"
 #include <SDL_ttf.h>
@@ -7,11 +11,24 @@
 #include <time.h>
 #include <stdbool.h>
 
+
+/* MACROS */
 #define WINDOW_WIDTH 1920
 #define WINDOW_HEIGHT 1080
 #define LANDLINE 1080-300
 #define JUMP_SPEED 20
 #define BOMBS 10
+#define gRen game -> renderer
+#define gWin game -> window
+#define gKey game -> keys
+#define gPlayer game -> player
+#define gGravity game -> gravity
+#define timerStart game -> timer
+#define X .position.x
+#define Y .position.y
+#define gBomb(VAR) game -> bomb[VAR]
+
+/* STRUCTS */
 
 //Positions for player and monsters etc
 typedef struct{
@@ -60,18 +77,22 @@ typedef struct{
 	keys keys;
 }game;
 
-#include "event.h"
-#include "lib/random.h"
-#include "lib/debug.h"
 
-#define gRen game -> renderer
-#define gWin game -> window
-#define gKey game -> keys
-#define gPlayer game -> player
-#define gGravity game -> gravity
-#define timerStart game -> timer
-#define X .position.x
-#define Y .position.y
-#define gBomb(VAR) game -> bomb[VAR]
+/* FUNCTION DEFINITIONS */
 
+//random.c
+int getRandomHeight();
+int getRandomWidth();
+int getRandomAngle();
+
+//debug.c
+void debugInfo(game * game);
+
+//event.c
+int loadGame(game * game);
+int processEvent(game *game);
+void renderGame(game * game);
+void shutdownGame(game * game);
+
+#endif
 
