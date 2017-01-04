@@ -20,8 +20,8 @@ int processEvent(game *game){
 						keepPlaying = 0;
 						break;
 					case SDLK_UP:
-						if(!gPlayer.airborne){
-							gPlayer.airborne = 1;
+						if(!getPlayerStatus(game, AIRBORNE)){
+							setPlayerStatus(game, AIRBORNE, TRUE);
 							gPlayer.velocity.up = gPlayer.velocity.maxUp - 15;
 							gPlayer.velocity.down = 0;
 							gKey.upKeyReleased = 0;	
@@ -38,13 +38,13 @@ int processEvent(game *game){
 	//For moving by holding key down.
 	const Uint8 *state = SDL_GetKeyboardState(NULL);
 	
-	if(state[SDL_SCANCODE_UP] && gPlayer.airborne){
+	if(state[SDL_SCANCODE_UP] && getPlayerStatus(game, AIRBORNE)){
 		gPlayer.velocity.up += 0.8f;
 	}
 	
 	if(state[SDL_SCANCODE_LEFT]){
 		gPlayer.velocity.left+=1.5f;
-		gPlayer.flip = 0;
+		setPlayerStatus(game, FACINGLEFT, TRUE);
 		if(gPlayer.velocity.left > gPlayer.velocity.maxLeft){
 			gPlayer.velocity.left = gPlayer.velocity.maxLeft;
 		}
@@ -52,7 +52,7 @@ int processEvent(game *game){
 	
 	if(state[SDL_SCANCODE_RIGHT]){
 		gPlayer.velocity.right+=1.5f;
-		gPlayer.flip = 1;
+		setPlayerStatus(game, FACINGLEFT, FALSE);
 		if(gPlayer.velocity.right > gPlayer.velocity.maxRight){
 			gPlayer.velocity.right = gPlayer.velocity.maxRight;
 		}
@@ -96,13 +96,12 @@ int processEvent(game *game){
 		}
 	}
 	
-	if(gPlayer.airborne){
-		gPlayer.flip = -1;
+	if(getPlayerStatus(game, AIRBORNE)){
 		gPlayer.angle = (double)getRandomAngle();
 	}
 	
 	if(gPlayer Y >= LANDLINE){
-		gPlayer.airborne = 0;
+		setPlayerStatus(game, AIRBORNE, FALSE);
 		gPlayer.angle = 0.0;
 		gPlayer Y = LANDLINE;
 	}
@@ -123,9 +122,10 @@ void renderGame(game * game){
 		SDL_Rect bombRect = {gBomb(i) X, gBomb(i) Y, 250/2, 250/2 };
 		SDL_RenderCopy(gRen, gBomb(i).texture, NULL, &bombRect);
 	}
+	int direction = !getPlayerStatus(game, FACINGLEFT);
 	//Render "Player" rectangle
 	SDL_Rect playerRect = {gPlayer X, gPlayer Y, gPlayer.hitbox.x, gPlayer.hitbox.y};
-	SDL_RenderCopyEx(gRen, gPlayer.texture, NULL, &playerRect, gPlayer.angle, NULL, gPlayer.flip);
+	SDL_RenderCopyEx(gRen, gPlayer.texture, NULL, &playerRect, gPlayer.angle, NULL, direction);
 	
 	SDL_RenderPresent(gRen);
 }
@@ -151,8 +151,6 @@ int loadGame(game * game){
 	gPlayer Y = LANDLINE;
 	gPlayer.hitbox.x = 150;
 	gPlayer.hitbox.y = 220;
-	//gPlayer.airborne = 0;
-	//gPlayer.flip = 0;
 	gPlayer.angle = 0.0f;
 	gGravity = 4;
 	gPlayer.velocity.up = 0.0f;
