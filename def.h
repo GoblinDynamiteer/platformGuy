@@ -1,3 +1,4 @@
+/* GUARD */
 #ifndef DEF_H
 #define DEF_H
 
@@ -28,8 +29,14 @@
 #define Y .position.y
 #define gBomb(VAR) game -> bomb[VAR]
 
-/* STRUCTS */
+/* Player Status flags */
+#define AIRBORNE 1		// 0001
+#define FACINGLEFT 2	// 0010
+#define STARTINGSTATUS 0
 
+typedef unsigned long long ull;
+
+/* STRUCTS */
 //Positions for player and monsters etc
 typedef struct{
 	int x,y;
@@ -52,6 +59,7 @@ typedef struct{
 	//short life;
 	short flip;
 	double angle;
+	ull status;
 	bool airborne;
 	velocity velocity;
 	//char *name;
@@ -94,5 +102,7 @@ int processEvent(game *game);
 void renderGame(game * game);
 void shutdownGame(game * game);
 
+
+/* END GUARD */
 #endif
 
