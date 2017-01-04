@@ -35,6 +35,9 @@
 #define ALIVE 4			// 0100
 #define STARTINGSTATUS 0
 
+enum {FALSE, TRUE};
+enum {OFF, ON};
+
 typedef unsigned long long U64;
 
 /* STRUCTS */
@@ -58,10 +61,8 @@ typedef struct{
 
 typedef struct{
 	//short life;
-	short flip;
 	double angle;
 	U64 status; //Airborne, facing, alive etc
-	bool airborne;
 	velocity velocity;
 	//char *name;
 	position position;
@@ -89,6 +90,10 @@ typedef struct{
 
 /* FUNCTION DEFINITIONS */
 
+//status.c
+bool getPlayerStatus(game * game, int check);
+void setPlayerStatus(game * game, int status, bool onOff);
+
 //random.c
 int getRandomHeight();
 int getRandomWidth();
@@ -103,8 +108,7 @@ int processEvent(game *game);
 void renderGame(game * game);
 void shutdownGame(game * game);
 
-//status.c
-bool getStatus(game * game, int check);
+
 
 
 /* END GUARD */
