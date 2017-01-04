@@ -1,14 +1,4 @@
-#include "main.h"
-#include "event.h"
-
-/* Macros:
-	gRen				game -> renderer
-	gWin				game -> window
-	gPlayer			game -> player
-	gBomb(VAR)	game -> bomb[VAR]
-	X .position.x
-	Y .position.y
-*/
+#include "def.h"
 
 int processEvent(game *game){
 	SDL_Event event;

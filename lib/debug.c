@@ -1,4 +1,4 @@
-#include "..\main.h"
+#include "..\def.h"
 
 void debugInfo(game * game){
 	//printf("Player X: %d\n", gPlayer X);

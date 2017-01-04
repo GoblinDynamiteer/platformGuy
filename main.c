@@ -1,4 +1,5 @@
-#include "main.h"
+#include "def.h"
+
 int main(int argc, char* args[]){
 	//Seed random
 	srand((int)time(NULL)); 

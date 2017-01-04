@@ -1,4 +1,4 @@
-#include "..\main.h"
+#include "..\def.h"
 
 int getRandomHeight(){
 	return rand() % WINDOW_HEIGHT;
