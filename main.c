@@ -14,7 +14,8 @@ int main(int argc, char* args[]){
 	SDL_Renderer *renderer;
 
 	//Start SDL system
-	SDL_Init(SDL_INIT_VIDEO);
+	SDL_Init(SDL_INIT_EVERYTHING);
+    IMG_Init(IMG_INIT_PNG);
 	
 	//Creates the window
 	window = SDL_CreateWindow("PlatformGuy", 
@@ -32,7 +33,7 @@ int main(int argc, char* args[]){
 	game.renderer = renderer;
 	game.window = window;
 
-	if(!loadGame(&game)){
+	if(!loadGame(&game) || !loadTextures(&game)){
 		shutdownGame(&game);
 		return 0;
 	}
