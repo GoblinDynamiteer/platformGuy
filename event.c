@@ -150,18 +150,17 @@ int processEvent(game *game){
 }
 
 void renderGame(game * game){
-	//Draws a white rectangle on blue backgtound
-	//RGB + ALPHA
+
 	SDL_SetRenderDrawColor(gRen, 0, 0, 255, 255);
 	SDL_RenderClear(gRen);
-	SDL_SetRenderDrawColor(gRen, 255, 255, 255, 255);
-	
+
 	//Render bomb images
 	//Create rectangles to hold bombs image, same size as image: 250 x 250px
 	for(int i=0;i<BOMBS;i++){
 		SDL_Rect bombRect = {gBomb(i) X, gBomb(i) Y, 250/2, 250/2 };
 		SDL_RenderCopy(gRen, gBomb(i).texture, NULL, &bombRect);
 	}
+
 	animatePlayer(game);
 	SDL_RenderPresent(gRen);
 }
@@ -169,13 +168,26 @@ void renderGame(game * game){
 void animatePlayer(game * game){
 	int width = gPlayer.hitbox.x;
 	int height = gPlayer.hitbox.y;
-	if(gTimer % 100 == 0){
-		; //For cycling trought texture animation frames..
+	int drawTexture = gPlayer.drawTexture;
+	int maxFrames = gPlayer.textureFrameSize[drawTexture];
+	SDL_Texture * texture = gPlayer.texture[drawTexture];
+	
+	if(gTimer % 4 == 0){
+		//For cycling trought texture animation frames..
+		gPlayer.frame++;
+		if(gPlayer.frame > maxFrames - 1){
+			gPlayer.frame = 0;
+		}
 	}
-	int direction = !getPlayerStatus(game, STATUS_FACINGLEFT);
-	//Render "Player" rectangle
-	SDL_Rect playerRect = {gPlayer X + width, gPlayer Y, width, height};
-	SDL_RenderCopyEx(gRen, gPlayer.texture[gPlayer.drawTexture], NULL, &playerRect, gPlayer.angle, NULL, direction);
+	
+	int direction = getPlayerStatus(game, STATUS_FACINGLEFT);
+
+	SDL_Rect playerRect = {gPlayer X, gPlayer Y, width, height};
+	SDL_Rect textureRect = {0,0};
+	SDL_QueryTexture(texture, NULL, NULL, &textureRect.w, &textureRect.h);
+	textureRect.w /= maxFrames;
+	textureRect.x = textureRect.w * gPlayer.frame;
+	SDL_RenderCopyEx(gRen, texture, &textureRect , &playerRect, gPlayer.angle, NULL, direction);
 }
 
 //Shuts down game, destroys windows, textures, renderer
@@ -187,74 +199,4 @@ void shutdownGame(game * game){
 	SDL_DestroyRenderer(gRen);
 	//Quit SDL
 	SDL_Quit();
-}
-
-
-int loadGame(game * game){
-
-	gPlayer.status = 0;
-	gPlayer.status |= STATUS_ALIVE;
-	//Player starting coordinates
-	gPlayer X = 12;
-	gPlayer Y = LANDLINE;
-	gPlayer.hitbox.x = 150;
-	gPlayer.hitbox.y = 220;
-	gPlayer.angle = 0.0f;
-	gGravity = 4;
-	gPlayer.velocity.up = 0.0f;
-	gPlayer.velocity.down = 30.0f;
-	gPlayer.velocity.left = 0.0f;
-	gPlayer.velocity.right = 0.0f;
-	gPlayer.velocity.maxUp = 45.0f;
-	gPlayer.velocity.maxDown = 40.0f;
-	gPlayer.velocity.maxLeft = 8.0f;
-	gPlayer.velocity.maxRight = 8.0f;
-	gKey.upKeyReleased = 1;
-	gPlayer.drawTexture = TEXTURE_IDLE;
-	gTimer = 1ULL; //UNSIGNED LONG LONG
-	
-	//gPlayer.texture = {NULL};
-	
-	SDL_Surface *surface = NULL; //For holding image
-	//Loads images
-	surface = IMG_Load("art/player/guy.png");
-	if(surface == NULL){
-		printf("Can't load guy.png");
-		SDL_Quit();
-		return 0;
-	}
-	gPlayer.texture[TEXTURE_IDLE] = SDL_CreateTextureFromSurface(gRen, surface);
-	
-	surface = IMG_Load("art/player/guy_jump.png");
-	if(surface == NULL){
-		printf("Can't load guy_jump.png");
-		SDL_Quit();
-		return 0;
-	}
-	gPlayer.texture[TEXTURE_JUMP] = SDL_CreateTextureFromSurface(gRen, surface);
-
-	surface = IMG_Load("art/player/guy_running.png");
-	if(surface == NULL){
-		printf("Can't load guy_jump.png");
-		SDL_Quit();
-		return 0;
-	}
-	gPlayer.texture[TEXTURE_RUNNING] = SDL_CreateTextureFromSurface(gRen, surface);
-	
-	surface = IMG_Load("art/enemies/bomb.png");
-	if(surface == NULL){
-		printf("Can't load bomb.png");
-		SDL_Quit();
-		return 0;
-	}
-	/* Sets image to SDL_Texture "bomb" in game struct
-		Might be bad idea to set texture to every bomb/enemy in array... */
-	for(int i=0;i<BOMBS;i++){
-		gBomb(i).texture = SDL_CreateTextureFromSurface(gRen, surface);
-		gBomb(i) X = getRandomWidth();
-		gBomb(i) Y = getRandomHeight() - WINDOW_HEIGHT / 2;;
-	}
-	
-	SDL_FreeSurface(surface); //Unload, not needed anymore
-	
 }
