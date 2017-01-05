@@ -24,7 +24,7 @@ int processEvent(game *game){
 							setPlayerStatus(game, STATUS_AIRBORNE, TRUE);
 							gPlayer.velocity.up = gPlayer.velocity.maxUp - 15;
 							gPlayer.velocity.down = 0;
-							gKey.upKeyReleased = 0;	
+	
 						}
 						break;
 				}
@@ -41,6 +41,7 @@ int processEvent(game *game){
 	/*  For "long jump".  */
 	if(state[SDL_SCANCODE_UP] && getPlayerStatus(game, STATUS_AIRBORNE)){
 		gPlayer.velocity.up += 0.8f;
+		printf("LONGJUMP\n");
 	}
 	
 	/*  Left movement, accelerates until max speed.  */
@@ -91,16 +92,16 @@ int processEvent(game *game){
 		gPlayer.velocity.up--;
 	}
 	
-	/*		Set status and texture for running.	*/
+	/*		Set status and textures for running.	*/
 	if(gPlayer.velocity.left > 0){
-		printf("RUNNING LEFT \n");
 		setPlayerStatus(game, STATUS_RUNNING, TRUE);
 		gPlayer.drawTexture = TEXTURE_RUNNING;
 		gPlayer.velocity.left -= 0.2f;
 		/*		If player has let go of button.	*/
-		if(!state[SDL_SCANCODE_LEFT]){
-			printf("SKIDDING LEFT \n");
-			gPlayer.drawTexture = TEXTURE_SKIDDING;
+		if(!state[SDL_SCANCODE_LEFT] && 
+			!getPlayerStatus(game, STATUS_AIRBORNE)){
+				setPlayerStatus(game, STATUS_SKIDDING, TRUE);
+				gPlayer.drawTexture = TEXTURE_SKIDDING;
 		}
 		/*		Stops player if running speed is negative  */
 		if(gPlayer.velocity.left < 0){
@@ -110,14 +111,14 @@ int processEvent(game *game){
 	
 	/*		Set status and texture for running.	*/
 	if(gPlayer.velocity.right > 0){
-		printf("RUNNING RIGHT \n");
 		setPlayerStatus(game, STATUS_RUNNING, TRUE);
 		gPlayer.drawTexture = TEXTURE_RUNNING;
 		gPlayer.velocity.right -= 0.2f;
 		/*		If player has let go of button.	*/
-		if(!state[SDL_SCANCODE_RIGHT]){
-			printf("SKIDDING RIGHT \n");
-			gPlayer.drawTexture = TEXTURE_SKIDDING;
+		if(!state[SDL_SCANCODE_RIGHT] && 
+			!getPlayerStatus(game, STATUS_AIRBORNE)){
+				setPlayerStatus(game, STATUS_SKIDDING, TRUE);
+				gPlayer.drawTexture = TEXTURE_SKIDDING;
 		}
 		/*		Stops player if running speed is negative  */
 		if(gPlayer.velocity.right < 0){
@@ -128,12 +129,7 @@ int processEvent(game *game){
 	/*		If player has stopped.	*/
 	if(!gPlayer.velocity.right && !gPlayer.velocity.left){
 		setPlayerStatus(game, STATUS_RUNNING, FALSE);
-	}
-	
-	/*		If player is airborne.	*/
-	if(getPlayerStatus(game, STATUS_AIRBORNE)){
-		gPlayer.drawTexture = TEXTURE_JUMP;
-		//gPlayer.angle = (double)getRandomAngle();
+		setPlayerStatus(game, STATUS_SKIDDING, FALSE);
 	}
 	
 	int playerFeet = gPlayer Y + gPlayer.hitbox.h;
@@ -141,23 +137,20 @@ int processEvent(game *game){
 	/*		If player is on or below (temporary) ground level	*/
 	if(playerFeet >= LANDLINE){
 		if(!getPlayerStatus(game, STATUS_RUNNING)){
-			printf("(feet: %d) (hitbox: %d)\n",playerFeet,gPlayer.hitbox.h);
 			gPlayer.drawTexture = TEXTURE_IDLE;
 		}
 		setPlayerStatus(game, STATUS_AIRBORNE, FALSE);
-		gPlayer.angle = 0.0;
 		gPlayer Y = LANDLINE - gPlayer.hitbox.h;
 	}
-	else{
-		/*		For debugging	*/
-		printf("IN AIR!!\n");
-	}
-	gTimer++;
 	
-	/*		For debugging	*/
-	if(gTimer % 20 == 0){
-		printf("[ TIMER TICK!!! ]\n");
+		/*		If player is airborne.	*/
+	if(getPlayerStatus(game, STATUS_AIRBORNE)){
+		gPlayer.drawTexture = TEXTURE_JUMP;
+		//gPlayer.angle = (double)getRandomAngle();
 	}
+	
+	gTimer++;
+	debugInfo(game);
 	return keepPlaying;
 }
 
