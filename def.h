@@ -18,7 +18,7 @@
 #define WINDOW_HEIGHT 1080
 #define PLAYER_FRAME_HEIGHT 279
 #define PLAYER_FRAME_WIDTH 197
-#define LANDLINE 1080-300
+#define LANDLINE 900
 #define JUMP_SPEED 20
 #define BOMBS 10
 #define gRen game -> renderer
@@ -62,7 +62,7 @@ typedef struct{
 }velocity;
 
 typedef struct{
-	int x, y;
+	int w, h;
 }hitbox;
 
 typedef struct{
