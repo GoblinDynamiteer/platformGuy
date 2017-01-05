@@ -20,8 +20,8 @@ int processEvent(game *game){
 						keepPlaying = 0;
 						break;
 					case SDLK_UP:
-						if(!getPlayerStatus(game, AIRBORNE)){
-							setPlayerStatus(game, AIRBORNE, TRUE);
+						if(!getPlayerStatus(game, STATUS_AIRBORNE)){
+							setPlayerStatus(game, STATUS_AIRBORNE, TRUE);
 							gPlayer.velocity.up = gPlayer.velocity.maxUp - 15;
 							gPlayer.velocity.down = 0;
 							gKey.upKeyReleased = 0;	
@@ -38,13 +38,13 @@ int processEvent(game *game){
 	//For moving by holding key down.
 	const Uint8 *state = SDL_GetKeyboardState(NULL);
 	
-	if(state[SDL_SCANCODE_UP] && getPlayerStatus(game, AIRBORNE)){
+	if(state[SDL_SCANCODE_UP] && getPlayerStatus(game, STATUS_AIRBORNE)){
 		gPlayer.velocity.up += 0.8f;
 	}
 	
 	if(state[SDL_SCANCODE_LEFT]){
 		gPlayer.velocity.left+=1.5f;
-		setPlayerStatus(game, FACINGLEFT, TRUE);
+		setPlayerStatus(game, STATUS_FACINGLEFT, TRUE);
 		if(gPlayer.velocity.left > gPlayer.velocity.maxLeft){
 			gPlayer.velocity.left = gPlayer.velocity.maxLeft;
 		}
@@ -52,7 +52,7 @@ int processEvent(game *game){
 	
 	if(state[SDL_SCANCODE_RIGHT]){
 		gPlayer.velocity.right+=1.5f;
-		setPlayerStatus(game, FACINGLEFT, FALSE);
+		setPlayerStatus(game, STATUS_FACINGLEFT, FALSE);
 		if(gPlayer.velocity.right > gPlayer.velocity.maxRight){
 			gPlayer.velocity.right = gPlayer.velocity.maxRight;
 		}
@@ -83,6 +83,9 @@ int processEvent(game *game){
 	}
 	
 	if(gPlayer.velocity.left > 0){
+		printf("RUNNING LEFT \n");
+		setPlayerStatus(game, STATUS_RUNNING, TRUE);
+		gPlayer.drawTexture = TEXTURE_RUNNING;
 		gPlayer.velocity.left -= 0.2f;
 		if(gPlayer.velocity.left < 0){
 			gPlayer.velocity.left = 0.0f;
@@ -90,22 +93,40 @@ int processEvent(game *game){
 	}
 	
 	if(gPlayer.velocity.right > 0){
+		printf("RUNNING RIGHT \n");
+		setPlayerStatus(game, STATUS_RUNNING, TRUE);
+		gPlayer.drawTexture = TEXTURE_RUNNING;
 		gPlayer.velocity.right -= 0.2f;
 		if(gPlayer.velocity.right < 0){
 			gPlayer.velocity.right = 0.0f;
 		}
 	}
 	
-	if(getPlayerStatus(game, AIRBORNE)){
-		gPlayer.angle = (double)getRandomAngle();
+	if(!gPlayer.velocity.right && !gPlayer.velocity.left){
+		setPlayerStatus(game, STATUS_RUNNING, FALSE);
+	}
+	
+	if(getPlayerStatus(game, STATUS_AIRBORNE)){
+		gPlayer.drawTexture = TEXTURE_JUMP;
+		//gPlayer.angle = (double)getRandomAngle();
 	}
 	
 	if(gPlayer Y >= LANDLINE){
-		setPlayerStatus(game, AIRBORNE, FALSE);
+		if(!getPlayerStatus(game, STATUS_RUNNING)){
+			printf("NOT RUNNING & ON GROUND LEVEL!\n");
+			gPlayer.drawTexture = TEXTURE_IDLE;
+		}
+		setPlayerStatus(game, STATUS_AIRBORNE, FALSE);
 		gPlayer.angle = 0.0;
 		gPlayer Y = LANDLINE;
 	}
-	
+	else{
+		printf("IN AIR!!\n");
+	}
+	gTimer++;
+	if(gTimer % 20 == 0){
+		printf("[ TIMER TICK!!! ]\n");
+	}
 	return keepPlaying;
 }
 
@@ -122,12 +143,20 @@ void renderGame(game * game){
 		SDL_Rect bombRect = {gBomb(i) X, gBomb(i) Y, 250/2, 250/2 };
 		SDL_RenderCopy(gRen, gBomb(i).texture, NULL, &bombRect);
 	}
-	int direction = !getPlayerStatus(game, FACINGLEFT);
-	//Render "Player" rectangle
-	SDL_Rect playerRect = {gPlayer X, gPlayer Y, gPlayer.hitbox.x, gPlayer.hitbox.y};
-	SDL_RenderCopyEx(gRen, gPlayer.texture, NULL, &playerRect, gPlayer.angle, NULL, direction);
-	
+	animatePlayer(game);
 	SDL_RenderPresent(gRen);
+}
+
+void animatePlayer(game * game){
+	int width = gPlayer.hitbox.x;
+	int height = gPlayer.hitbox.y;
+	if(gTimer % 100 == 0){
+		; //For cycling trought texture animation frames..
+	}
+	int direction = !getPlayerStatus(game, STATUS_FACINGLEFT);
+	//Render "Player" rectangle
+	SDL_Rect playerRect = {gPlayer X + width, gPlayer Y, width, height};
+	SDL_RenderCopyEx(gRen, gPlayer.texture[gPlayer.drawTexture], NULL, &playerRect, gPlayer.angle, NULL, direction);
 }
 
 //Shuts down game, destroys windows, textures, renderer
@@ -145,7 +174,7 @@ void shutdownGame(game * game){
 int loadGame(game * game){
 
 	gPlayer.status = 0;
-	gPlayer.status |= ALIVE;
+	gPlayer.status |= STATUS_ALIVE;
 	//Player starting coordinates
 	gPlayer X = 12;
 	gPlayer Y = LANDLINE;
@@ -161,7 +190,11 @@ int loadGame(game * game){
 	gPlayer.velocity.maxDown = 40.0f;
 	gPlayer.velocity.maxLeft = 8.0f;
 	gPlayer.velocity.maxRight = 8.0f;
-	gKey.upKeyReleased = 1;	
+	gKey.upKeyReleased = 1;
+	gPlayer.drawTexture = TEXTURE_IDLE;
+	gTimer = 1ULL; //UNSIGNED LONG LONG
+	
+	//gPlayer.texture = {NULL};
 	
 	SDL_Surface *surface = NULL; //For holding image
 	//Loads images
@@ -171,7 +204,23 @@ int loadGame(game * game){
 		SDL_Quit();
 		return 0;
 	}
-	gPlayer.texture = SDL_CreateTextureFromSurface(gRen, surface);
+	gPlayer.texture[TEXTURE_IDLE] = SDL_CreateTextureFromSurface(gRen, surface);
+	
+	surface = IMG_Load("art/player/guy_jump.png");
+	if(surface == NULL){
+		printf("Can't load guy_jump.png");
+		SDL_Quit();
+		return 0;
+	}
+	gPlayer.texture[TEXTURE_JUMP] = SDL_CreateTextureFromSurface(gRen, surface);
+
+	surface = IMG_Load("art/player/guy_running.png");
+	if(surface == NULL){
+		printf("Can't load guy_jump.png");
+		SDL_Quit();
+		return 0;
+	}
+	gPlayer.texture[TEXTURE_RUNNING] = SDL_CreateTextureFromSurface(gRen, surface);
 	
 	surface = IMG_Load("art/enemies/bomb.png");
 	if(surface == NULL){
