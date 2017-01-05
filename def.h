@@ -36,7 +36,13 @@
 #define STATUS_FACINGLEFT 2	// 0010
 #define STATUS_ALIVE 4			// 0100
 #define STATUS_RUNNING 8			// 1000
+#define STATUS_SKIDDING 16			// 1 0000
 #define STARTINGSTATUS 0
+
+#define DEBUG_OUTPUT_SPEED 20
+#define DEBUG_MOVEMENT 0
+#define DEBUG_JUMPING 0
+#define DEBUG_HITBOX 1
 
 enum {FALSE, TRUE};
 enum {OFF, ON};
