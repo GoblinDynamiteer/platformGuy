@@ -16,6 +16,8 @@
 /* MACROS */
 #define WINDOW_WIDTH 1920
 #define WINDOW_HEIGHT 1080
+#define PLAYER_FRAME_HEIGHT 279
+#define PLAYER_FRAME_WIDTH 197
 #define LANDLINE 1080-300
 #define JUMP_SPEED 20
 #define BOMBS 10
@@ -72,7 +74,9 @@ typedef struct{
 	position position;
 	hitbox hitbox;
 	short drawTexture;
+	short textureFrameSize[3];
 	SDL_Texture *texture[3];
+	short frame;
 }player;
 
 typedef struct{
@@ -108,13 +112,14 @@ int getRandomAngle();
 void debugInfo(game * game);
 
 //event.c
-int loadGame(game * game);
 int processEvent(game *game);
 void renderGame(game * game);
 void shutdownGame(game * game);
 void animatePlayer(game * game);
 
-
+//load.c
+bool loadGame(game * game);
+bool loadTextures(game * game);
 
 
 /* END GUARD */
