@@ -37,9 +37,10 @@
 #define STATUS_ALIVE 4			// 0100
 #define STATUS_RUNNING 8			// 1000
 #define STATUS_SKIDDING 16			// 1 0000
+#define STATUS_DUCKING 32			// 10 0000
 #define STARTINGSTATUS 0
 
-#define DEBUG_OUTPUT_SPEED 20
+#define DEBUG_OUTPUT_SPEED 4
 #define DEBUG_MOVEMENT 0
 #define DEBUG_JUMPING 0
 #define DEBUG_HITBOX 1
@@ -48,7 +49,7 @@ enum {FALSE, TRUE};
 enum {OFF, ON};
 
 //Player textures
-enum {TEXTURE_IDLE, TEXTURE_RUNNING, TEXTURE_JUMP, TEXTURE_SKIDDING};
+enum {TEXTURE_IDLE, TEXTURE_RUNNING, TEXTURE_JUMP, TEXTURE_SKIDDING, TEXTURE_DUCKING, TEXTURE_JUMP_CLIPPED, TEXTURE_NULL};
 
 typedef unsigned long long U64;
 
@@ -80,8 +81,8 @@ typedef struct{
 	position position;
 	hitbox hitbox;
 	short drawTexture;
-	short textureFrameSize[4];
-	SDL_Texture *texture[4];
+	short textureFrameSize[8];
+	SDL_Texture *texture[8];
 	short frame;
 }player;
 
@@ -108,6 +109,8 @@ typedef struct{
 //status.c
 bool getPlayerStatus(game * game, int check);
 void setPlayerStatus(game * game, int status, bool onOff);
+int determinePlayerTexture(game * game);
+void determinePlayerStatus(game * game, const Uint8 *state);
 
 //random.c
 int getRandomHeight();
