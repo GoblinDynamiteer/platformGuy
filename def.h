@@ -16,11 +16,13 @@
 /* MACROS */
 #define WINDOW_WIDTH 1920
 #define WINDOW_HEIGHT 1080
-#define PLAYER_FRAME_HEIGHT 279
+#define PLAYER_FRAME_HEIGHT 280
 #define PLAYER_FRAME_WIDTH 197
 #define LANDLINE 900
 #define JUMP_SPEED 20
 #define BOMBS 10
+
+
 #define gRen game -> renderer
 #define gWin game -> window
 #define gKey game -> keys
@@ -38,18 +40,21 @@
 #define STATUS_RUNNING 8			// 1000
 #define STATUS_SKIDDING 16			// 1 0000
 #define STATUS_DUCKING 32			// 10 0000
+#define STATUS_ATTACKING_T 64			// 100 0000
+#define STATUS_ATTACKING_S 128			// 1000 0000
 #define STARTINGSTATUS 0
 
-#define DEBUG_OUTPUT_SPEED 4
+#define DEBUG_OUTPUT_SPEED 5
 #define DEBUG_MOVEMENT 0
 #define DEBUG_JUMPING 0
-#define DEBUG_HITBOX 1
+#define DEBUG_HITBOX 0
+#define DEBUG_ATTACK 1
 
 enum {FALSE, TRUE};
 enum {OFF, ON};
 
 //Player textures
-enum {TEXTURE_IDLE, TEXTURE_RUNNING, TEXTURE_JUMP, TEXTURE_SKIDDING, TEXTURE_DUCKING, TEXTURE_JUMP_CLIPPED, TEXTURE_NULL};
+enum {TEXTURE_IDLE, TEXTURE_RUNNING, TEXTURE_JUMP, TEXTURE_SKIDDING, TEXTURE_DUCKING, TEXTURE_JUMP_CLIPPED, TEXTURE_NULL, TEXTURE_ATTACK_T, TEXTURE_ATTACK_S};
 
 typedef unsigned long long U64;
 
@@ -81,8 +86,8 @@ typedef struct{
 	position position;
 	hitbox hitbox;
 	short drawTexture;
-	short textureFrameSize[8];
-	SDL_Texture *texture[8];
+	short textureFrameSize[20];
+	SDL_Texture *texture[20];
 	short frame;
 }player;
 

@@ -33,5 +33,13 @@ void debugInfo(game * game){
 		if(playerFeet>LANDLINE){
 		printf("[ Under Landline! ] \n");
 		}
+		if(DEBUG_ATTACK){
+			if(getPlayerStatus(game, STATUS_ATTACKING_T)){
+				printf("[ Attacking: Thrust ]\n");
+			}
+			if(getPlayerStatus(game, STATUS_ATTACKING_S)){
+				printf("[ Attacking: Swing ]\n");
+			}
+		}
 	}
 }

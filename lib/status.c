@@ -20,6 +20,17 @@ void setPlayerStatus(game * game, int status, bool onOff){
 
 /*		Figures out current status of player and sets it to variable.	*/
 void determinePlayerStatus(game * game, const Uint8 *state){
+	/* If attack-animation has cycled */
+	if(gPlayer.drawTexture == TEXTURE_ATTACK_T 
+		&& gPlayer.frame == gPlayer.textureFrameSize[TEXTURE_ATTACK_T] -1){
+			setPlayerStatus(game, STATUS_ATTACKING_T, FALSE);
+	}
+	
+	if(gPlayer.drawTexture == TEXTURE_ATTACK_S 
+		&& gPlayer.frame == gPlayer.textureFrameSize[TEXTURE_ATTACK_S] -1){
+			setPlayerStatus(game, STATUS_ATTACKING_S, FALSE);
+	}
+	
 	/*		If player has stopped.	*/
 	if(!gPlayer.velocity.right && !gPlayer.velocity.left){
 		setPlayerStatus(game, STATUS_RUNNING, FALSE);
@@ -97,7 +108,15 @@ int determinePlayerTexture(game * game){
 	}
 	
 	if(getPlayerStatus(game, STATUS_AIRBORNE)){
-		texture = TEXTURE_JUMP_CLIPPED;
+		texture = TEXTURE_JUMP;
+	}
+	
+	if(getPlayerStatus(game, STATUS_ATTACKING_T)){
+		texture = TEXTURE_ATTACK_T;
+	}
+	
+	if(getPlayerStatus(game, STATUS_ATTACKING_S)){
+		texture = TEXTURE_ATTACK_S;
 	}
 
 	return texture;

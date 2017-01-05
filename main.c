@@ -42,7 +42,7 @@ int main(int argc, char* args[]){
 	while(processEvent(&game)){
 		renderGame(&game);
 	}
-
+	
 	shutdownGame(&game);
 	return 0;
 }

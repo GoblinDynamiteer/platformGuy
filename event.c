@@ -3,7 +3,7 @@
 int processEvent(game *game){
 	SDL_Event event;
 	int keepPlaying = 1;
-	while(SDL_PollEvent(&event)){ //SDL_PollEvent returns true if an event shall be processed
+	while(SDL_PollEvent(&event)){
 		switch(event.type){
 			case SDL_WINDOWEVENT_CLOSE:
 				if(gWin){
@@ -24,7 +24,20 @@ int processEvent(game *game){
 							setPlayerStatus(game, STATUS_AIRBORNE, TRUE);
 							gPlayer.velocity.up = gPlayer.velocity.maxUp - 15;
 							gPlayer.velocity.down = 0;
-	
+						}
+						break;
+					/* Sword Attack: Thrust  */
+					case SDLK_q:
+						if(!getPlayerStatus(game, STATUS_ATTACKING_T) &&
+								!getPlayerStatus(game, STATUS_ATTACKING_S)){
+							setPlayerStatus(game, STATUS_ATTACKING_T, TRUE);
+						}
+						break;
+					/* Sword Attack: Swing  */
+					case SDLK_w:
+						if(!getPlayerStatus(game, STATUS_ATTACKING_S)
+								&& !getPlayerStatus(game, STATUS_ATTACKING_T)){
+							setPlayerStatus(game, STATUS_ATTACKING_S, TRUE);
 						}
 						break;
 				}
@@ -115,10 +128,9 @@ int processEvent(game *game){
 	determinePlayerStatus(game, state);
 	gPlayer.drawTexture = determinePlayerTexture(game);
 	
-	
-	
-	if(gPlayer Y + gPlayer.hitbox.h> LANDLINE){
-		gPlayer Y = LANDLINE - gPlayer.hitbox.h;
+	/*		Build collision detection instead of this 	*/
+	if(gPlayer Y + PLAYER_FRAME_HEIGHT> LANDLINE){
+		gPlayer Y = LANDLINE - PLAYER_FRAME_HEIGHT;
 	}
 
 	debugInfo(game);
@@ -175,8 +187,12 @@ void animatePlayer(game * game){
 	
 	textureRect.x = textureRect.w * gPlayer.frame;
 	
-	SDL_Rect playerRect = {gPlayer X, gPlayer Y, width, height};
-	SDL_RenderCopyEx(gRen, texture, &textureRect , &playerRect, gPlayer.angle, NULL, direction);
+	/*		Difference between texture size and player hitbox	*/
+	int tY = textureRect.h - PLAYER_FRAME_HEIGHT;
+	int tX = textureRect.w - PLAYER_FRAME_WIDTH;
+	
+	SDL_Rect playerTextureRect = {gPlayer X - tX/2, gPlayer Y-tY/2, width, height};
+	SDL_RenderCopyEx(gRen, texture, &textureRect , &playerTextureRect, gPlayer.angle, NULL, direction);
 }
 
 //Shuts down game, destroys windows, textures, renderer

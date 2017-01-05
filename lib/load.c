@@ -62,6 +62,16 @@ bool loadTextures(game * game){
 	gPlayer.texture[TEXTURE_DUCKING] = SDL_CreateTextureFromSurface(gRen, surface);
 	gPlayer.textureFrameSize[TEXTURE_DUCKING] = 7;
 	
+	surface = IMG_Load("art/player/girl_attack1.png");
+	if(surface == NULL) success = 0;
+	gPlayer.texture[TEXTURE_ATTACK_T] = SDL_CreateTextureFromSurface(gRen, surface);
+	gPlayer.textureFrameSize[TEXTURE_ATTACK_T] = 14;
+	
+	surface = IMG_Load("art/player/girl_attack2.png");
+	if(surface == NULL) success = 0;
+	gPlayer.texture[TEXTURE_ATTACK_S] = SDL_CreateTextureFromSurface(gRen, surface);
+	gPlayer.textureFrameSize[TEXTURE_ATTACK_S] = 13;
+	
 	gPlayer.texture[TEXTURE_NULL] = NULL;
 	gPlayer.textureFrameSize[TEXTURE_NULL] = 0;
 
