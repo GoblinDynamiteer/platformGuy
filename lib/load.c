@@ -6,8 +6,8 @@ bool loadGame(game * game){
 	//Player starting coordinates
 	gPlayer.hitbox.w = PLAYER_FRAME_WIDTH;
 	gPlayer.hitbox.h = PLAYER_FRAME_HEIGHT;
-	gPlayer X = 12;
-	gPlayer Y = LANDLINE - gPlayer.hitbox.h;
+	gPlayer X = 120;
+	gPlayer Y = 60;
 	gPlayer.angle = 0.0f;
 	gPlayer.frame = 0;
 	gGravity = 4;
@@ -36,6 +36,12 @@ bool loadTextures(game * game){
 	gPlayer.texture[TEXTURE_IDLE] = SDL_CreateTextureFromSurface(gRen, surface);
 	gPlayer.textureFrameSize[TEXTURE_IDLE] = 17;
 	
+	//surface = IMG_Load("art/player/girl_airborne.png");
+	surface = IMG_Load("art/player/girl_airborne_clipped.png");
+	if(surface == NULL) success = 0;
+	gPlayer.texture[TEXTURE_JUMP_CLIPPED] = SDL_CreateTextureFromSurface(gRen, surface);
+	gPlayer.textureFrameSize[TEXTURE_JUMP_CLIPPED] = 2;
+	
 	surface = IMG_Load("art/player/girl_airborne.png");
 	if(surface == NULL) success = 0;
 	gPlayer.texture[TEXTURE_JUMP] = SDL_CreateTextureFromSurface(gRen, surface);
@@ -50,7 +56,15 @@ bool loadTextures(game * game){
 	if(surface == NULL) success = 0;
 	gPlayer.texture[TEXTURE_SKIDDING] = SDL_CreateTextureFromSurface(gRen, surface);
 	gPlayer.textureFrameSize[TEXTURE_SKIDDING] = 15;
+
+	surface = IMG_Load("art/player/girl_crouch.png");
+	if(surface == NULL) success = 0;
+	gPlayer.texture[TEXTURE_DUCKING] = SDL_CreateTextureFromSurface(gRen, surface);
+	gPlayer.textureFrameSize[TEXTURE_DUCKING] = 7;
 	
+	gPlayer.texture[TEXTURE_NULL] = NULL;
+	gPlayer.textureFrameSize[TEXTURE_NULL] = 0;
+
 	//BOMBS
 	surface = IMG_Load("art/enemies/bomb.png");
 	if(surface == NULL) success = 0;
@@ -62,7 +76,7 @@ bool loadTextures(game * game){
 		gBomb(i) X = getRandomWidth();
 		gBomb(i) Y = getRandomHeight() - WINDOW_HEIGHT / 2;;
 	}
-	
+
 	SDL_FreeSurface(surface); //Unload, not needed anymore
 	return success;
 }
