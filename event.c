@@ -38,10 +38,12 @@ int processEvent(game *game){
 	//For moving by holding key down.
 	const Uint8 *state = SDL_GetKeyboardState(NULL);
 	
+	/*  For "long jump".  */
 	if(state[SDL_SCANCODE_UP] && getPlayerStatus(game, STATUS_AIRBORNE)){
 		gPlayer.velocity.up += 0.8f;
 	}
 	
+	/*  Left movement, accelerates until max speed.  */
 	if(state[SDL_SCANCODE_LEFT]){
 		gPlayer.velocity.left+=1.5f;
 		setPlayerStatus(game, STATUS_FACINGLEFT, TRUE);
@@ -50,6 +52,7 @@ int processEvent(game *game){
 		}
 	}
 	
+	/*  Right movement, accelerates until max speed.  */
 	if(state[SDL_SCANCODE_RIGHT]){
 		gPlayer.velocity.right+=1.5f;
 		setPlayerStatus(game, STATUS_FACINGLEFT, FALSE);
@@ -57,60 +60,73 @@ int processEvent(game *game){
 			gPlayer.velocity.right = gPlayer.velocity.maxRight;
 		}
 	}
+	
+	/*  Ducking, not working as intended  */
 	gPlayer.hitbox.y = 220;
 	if(state[SDL_SCANCODE_DOWN]){
 		gPlayer.hitbox.y = 220/2;
 		debugInfo(game);
 	}
 	
-	//BOMB FALLING
+	/*		Affect bombs with gravity.		*/
 	for(int i=0;i<BOMBS;i++){
 		if(gBomb(i) Y < LANDLINE){
 			gBomb(i) Y += gGravity;
 		}
 	}
 	
-	//PLAYER GRAVITY//Movement  - FALLING//JUMPING
+	/*		Affect player with gravity.		*/
+	gPlayer Y += gGravity - gPlayer.velocity.up + gPlayer.velocity.down;
+	
+	/*		Move player.		*/
+	gPlayer X += gPlayer.velocity.right - gPlayer.velocity.left;
+	
+	/*		Makes player falling faster each game loop.		*/
 	if(gPlayer.velocity.down < gPlayer.velocity.maxDown){
 		gPlayer.velocity.down++;
 	}
 
-	gPlayer Y += gGravity - gPlayer.velocity.up + gPlayer.velocity.down;
-	gPlayer X += gPlayer.velocity.right - gPlayer.velocity.left;
-
+	/*		Decrease jump strenght.		*/
 	if(gPlayer.velocity.up > 0){
 		gPlayer.velocity.up--;
 	}
 	
+	/*		Set status and texture for running.	*/
 	if(gPlayer.velocity.left > 0){
 		printf("RUNNING LEFT \n");
 		setPlayerStatus(game, STATUS_RUNNING, TRUE);
 		gPlayer.drawTexture = TEXTURE_RUNNING;
 		gPlayer.velocity.left -= 0.2f;
+		/*		Stops player if running speed is negative  */
 		if(gPlayer.velocity.left < 0){
 			gPlayer.velocity.left = 0.0f;
 		}
 	}
 	
+	/*		Set status and texture for running.	*/
 	if(gPlayer.velocity.right > 0){
 		printf("RUNNING RIGHT \n");
 		setPlayerStatus(game, STATUS_RUNNING, TRUE);
 		gPlayer.drawTexture = TEXTURE_RUNNING;
 		gPlayer.velocity.right -= 0.2f;
+		/*		Stops player if running speed is negative  */
 		if(gPlayer.velocity.right < 0){
 			gPlayer.velocity.right = 0.0f;
 		}
 	}
 	
+	/*		If player has stopped.	*/
 	if(!gPlayer.velocity.right && !gPlayer.velocity.left){
 		setPlayerStatus(game, STATUS_RUNNING, FALSE);
 	}
 	
+	/*		If player is airborne.	*/
 	if(getPlayerStatus(game, STATUS_AIRBORNE)){
 		gPlayer.drawTexture = TEXTURE_JUMP;
 		//gPlayer.angle = (double)getRandomAngle();
 	}
 	
+	/*		If player is on or below (temporary) ground level	*/
 	if(gPlayer Y >= LANDLINE){
 		if(!getPlayerStatus(game, STATUS_RUNNING)){
 			printf("NOT RUNNING & ON GROUND LEVEL!\n");
@@ -121,9 +137,12 @@ int processEvent(game *game){
 		gPlayer Y = LANDLINE;
 	}
 	else{
+		/*		For debugging	*/
 		printf("IN AIR!!\n");
 	}
 	gTimer++;
+	
+	/*		For debugging	*/
 	if(gTimer % 20 == 0){
 		printf("[ TIMER TICK!!! ]\n");
 	}
