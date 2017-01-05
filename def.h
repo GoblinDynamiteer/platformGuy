@@ -24,19 +24,23 @@
 #define gKey game -> keys
 #define gPlayer game -> player
 #define gGravity game -> gravity
-#define timerStart game -> timer
+#define gTimer game -> timer
 #define X .position.x
 #define Y .position.y
 #define gBomb(VAR) game -> bomb[VAR]
 
 /* Player Status flags */
-#define AIRBORNE 1		// 0001
-#define FACINGLEFT 2	// 0010
-#define ALIVE 4			// 0100
+#define STATUS_AIRBORNE 1		// 0001
+#define STATUS_FACINGLEFT 2	// 0010
+#define STATUS_ALIVE 4			// 0100
+#define STATUS_RUNNING 8			// 1000
 #define STARTINGSTATUS 0
 
 enum {FALSE, TRUE};
 enum {OFF, ON};
+
+//Player textures
+enum {TEXTURE_IDLE, TEXTURE_RUNNING, TEXTURE_JUMP};
 
 typedef unsigned long long U64;
 
@@ -67,7 +71,8 @@ typedef struct{
 	//char *name;
 	position position;
 	hitbox hitbox;
-	SDL_Texture *texture;
+	short drawTexture;
+	SDL_Texture *texture[3];
 }player;
 
 typedef struct{
@@ -83,7 +88,7 @@ typedef struct{
 	SDL_Renderer *renderer;
 	SDL_Window *window;
 	int gravity;
-	Uint32 timer;
+	U64 timer;
 	keys keys;
 }game;
 
@@ -107,6 +112,7 @@ int loadGame(game * game);
 int processEvent(game *game);
 void renderGame(game * game);
 void shutdownGame(game * game);
+void animatePlayer(game * game);
 
 
 
