@@ -4,10 +4,10 @@ bool loadGame(game * game){
 	gPlayer.status = 0;
 	gPlayer.status |= STATUS_ALIVE;
 	//Player starting coordinates
+	gPlayer.hitbox.w = PLAYER_FRAME_WIDTH;
+	gPlayer.hitbox.h = PLAYER_FRAME_HEIGHT;
 	gPlayer X = 12;
-	gPlayer Y = LANDLINE;
-	gPlayer.hitbox.x = PLAYER_FRAME_WIDTH;
-	gPlayer.hitbox.y = PLAYER_FRAME_HEIGHT;
+	gPlayer Y = LANDLINE - gPlayer.hitbox.h;
 	gPlayer.angle = 0.0f;
 	gPlayer.frame = 0;
 	gGravity = 4;
@@ -28,7 +28,8 @@ bool loadGame(game * game){
 
 bool loadTextures(game * game){
 		
-	//gPlayer.texture = {NULL};
+
+
 	
 	SDL_Surface *surface = NULL; //For holding image
 	//Loads images
@@ -41,8 +42,7 @@ bool loadTextures(game * game){
 	gPlayer.texture[TEXTURE_IDLE] = SDL_CreateTextureFromSurface(gRen, surface);
 	gPlayer.textureFrameSize[TEXTURE_IDLE] = 17;
 	
-	surface = IMG_Load("art/player/guy_jump.png");
-	surface = IMG_Load("art/player/girl.png");
+	surface = IMG_Load("art/player/girl_airborne.png");
 	if(surface == NULL){
 		printf("Can't load guy_jump.png");
 		SDL_Quit();
@@ -50,17 +50,16 @@ bool loadTextures(game * game){
 	}
 	
 	gPlayer.texture[TEXTURE_JUMP] = SDL_CreateTextureFromSurface(gRen, surface);
-	gPlayer.textureFrameSize[TEXTURE_JUMP] = 17;
+	gPlayer.textureFrameSize[TEXTURE_JUMP] = 2;
 
-	surface = IMG_Load("art/player/guy_running.png");
-	surface = IMG_Load("art/player/girl.png");
+	surface = IMG_Load("art/player/girl_running.png");
 	if(surface == NULL){
 		printf("Can't load guy_jump.png");
 		SDL_Quit();
 		return 0;
 	}
 	gPlayer.texture[TEXTURE_RUNNING] = SDL_CreateTextureFromSurface(gRen, surface);
-	gPlayer.textureFrameSize[TEXTURE_RUNNING] = 17;
+	gPlayer.textureFrameSize[TEXTURE_RUNNING] = 14;
 	
 	surface = IMG_Load("art/enemies/bomb.png");
 	if(surface == NULL){

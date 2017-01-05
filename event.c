@@ -62,10 +62,8 @@ int processEvent(game *game){
 	}
 	
 	/*  Ducking, not working as intended  */
-	gPlayer.hitbox.y = 220;
 	if(state[SDL_SCANCODE_DOWN]){
-		gPlayer.hitbox.y = 220/2;
-		debugInfo(game);
+		;
 	}
 	
 	/*		Affect bombs with gravity.		*/
@@ -126,15 +124,17 @@ int processEvent(game *game){
 		//gPlayer.angle = (double)getRandomAngle();
 	}
 	
+	int playerFeet = gPlayer Y + gPlayer.hitbox.h;
+	
 	/*		If player is on or below (temporary) ground level	*/
-	if(gPlayer Y >= LANDLINE){
+	if(playerFeet >= LANDLINE){
 		if(!getPlayerStatus(game, STATUS_RUNNING)){
-			printf("NOT RUNNING & ON GROUND LEVEL!\n");
+			printf("(feet: %d) (hitbox: %d)\n",playerFeet,gPlayer.hitbox.h);
 			gPlayer.drawTexture = TEXTURE_IDLE;
 		}
 		setPlayerStatus(game, STATUS_AIRBORNE, FALSE);
 		gPlayer.angle = 0.0;
-		gPlayer Y = LANDLINE;
+		gPlayer Y = LANDLINE - gPlayer.hitbox.h;
 	}
 	else{
 		/*		For debugging	*/
@@ -150,10 +150,14 @@ int processEvent(game *game){
 }
 
 void renderGame(game * game){
-
+	
 	SDL_SetRenderDrawColor(gRen, 0, 0, 255, 255);
 	SDL_RenderClear(gRen);
-
+	
+	SDL_SetRenderDrawColor(gRen, 255, 255, 255, 255);
+	SDL_Rect ground = {0, LANDLINE, WINDOW_WIDTH, 200};
+	SDL_RenderFillRect(gRen, &ground);
+	
 	//Render bomb images
 	//Create rectangles to hold bombs image, same size as image: 250 x 250px
 	for(int i=0;i<BOMBS;i++){
@@ -166,11 +170,19 @@ void renderGame(game * game){
 }
 
 void animatePlayer(game * game){
-	int width = gPlayer.hitbox.x;
-	int height = gPlayer.hitbox.y;
+	SDL_Rect textureRect = {0,0};
+	
 	int drawTexture = gPlayer.drawTexture;
-	int maxFrames = gPlayer.textureFrameSize[drawTexture];
 	SDL_Texture * texture = gPlayer.texture[drawTexture];
+	SDL_QueryTexture(texture, NULL, NULL, &textureRect.w, &textureRect.h);
+	
+	int maxFrames = gPlayer.textureFrameSize[drawTexture];
+	textureRect.w /= maxFrames;
+	
+	gPlayer.hitbox.h = textureRect.h;
+	
+	int width = textureRect.w;
+	int height = textureRect.h;
 	
 	if(gTimer % 4 == 0){
 		//For cycling trought texture animation frames..
@@ -180,13 +192,10 @@ void animatePlayer(game * game){
 		}
 	}
 	
-	int direction = getPlayerStatus(game, STATUS_FACINGLEFT);
-
-	SDL_Rect playerRect = {gPlayer X, gPlayer Y, width, height};
-	SDL_Rect textureRect = {0,0};
-	SDL_QueryTexture(texture, NULL, NULL, &textureRect.w, &textureRect.h);
-	textureRect.w /= maxFrames;
 	textureRect.x = textureRect.w * gPlayer.frame;
+	
+	int direction = getPlayerStatus(game, STATUS_FACINGLEFT);
+	SDL_Rect playerRect = {gPlayer X, gPlayer Y, width, height};
 	SDL_RenderCopyEx(gRen, texture, &textureRect , &playerRect, gPlayer.angle, NULL, direction);
 }
 
