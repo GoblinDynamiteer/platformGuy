@@ -39,34 +39,31 @@ int processEvent(game *game){
 	const Uint8 *state = SDL_GetKeyboardState(NULL);
 	
 	/*  For "long jump".  */
-	if(state[SDL_SCANCODE_UP] && getPlayerStatus(game, STATUS_AIRBORNE)){
-		gPlayer.velocity.up += 0.8f;
-		printf("LONGJUMP\n");
+	if(state[SDL_SCANCODE_UP] 
+		&& getPlayerStatus(game, STATUS_AIRBORNE)){
+			gPlayer.velocity.up += 0.8f;
 	}
 	
 	/*  Left movement, accelerates until max speed.  */
-	if(state[SDL_SCANCODE_LEFT]){
-		gPlayer.velocity.left+=1.5f;
-		setPlayerStatus(game, STATUS_FACINGLEFT, TRUE);
-		if(gPlayer.velocity.left > gPlayer.velocity.maxLeft){
-			gPlayer.velocity.left = gPlayer.velocity.maxLeft;
-		}
+	if(state[SDL_SCANCODE_LEFT] 
+		&& !getPlayerStatus(game, STATUS_DUCKING)){
+			gPlayer.velocity.left+=1.5f;
+			setPlayerStatus(game, STATUS_FACINGLEFT, TRUE);
+			if(gPlayer.velocity.left > gPlayer.velocity.maxLeft){
+				gPlayer.velocity.left = gPlayer.velocity.maxLeft;
+			}
 	}
 	
 	/*  Right movement, accelerates until max speed.  */
-	if(state[SDL_SCANCODE_RIGHT]){
-		gPlayer.velocity.right+=1.5f;
-		setPlayerStatus(game, STATUS_FACINGLEFT, FALSE);
-		if(gPlayer.velocity.right > gPlayer.velocity.maxRight){
-			gPlayer.velocity.right = gPlayer.velocity.maxRight;
-		}
+	if(state[SDL_SCANCODE_RIGHT] 
+		&& !getPlayerStatus(game, STATUS_DUCKING)){
+			gPlayer.velocity.right+=1.5f;
+			if(gPlayer.velocity.right > gPlayer.velocity.maxRight){
+				gPlayer.velocity.right = gPlayer.velocity.maxRight;
+			}
 	}
 	
-	/*  Ducking, not working as intended  */
-	if(state[SDL_SCANCODE_DOWN]){
-		;
-	}
-	
+
 	int bh;
 	SDL_QueryTexture(gBomb(0).texture, NULL, NULL, NULL, &bh);
 	/*		Affect bombs with gravity.		*/
@@ -78,7 +75,7 @@ int processEvent(game *game){
 	
 	/*		Affect player with gravity.		*/
 	gPlayer Y += gGravity - gPlayer.velocity.up + gPlayer.velocity.down;
-	
+
 	/*		Move player.		*/
 	gPlayer X += gPlayer.velocity.right - gPlayer.velocity.left;
 	
@@ -90,66 +87,40 @@ int processEvent(game *game){
 	/*		Decrease jump strenght.		*/
 	if(gPlayer.velocity.up > 0){
 		gPlayer.velocity.up--;
+		/*		Stops if speed is negative  */
+		if(gPlayer.velocity.up < 0){
+			gPlayer.velocity.up = 0.0f;
+		}
 	}
 	
-	/*		Set status and textures for running.	*/
+	/*		Deacceleration.	*/
 	if(gPlayer.velocity.left > 0){
-		setPlayerStatus(game, STATUS_RUNNING, TRUE);
-		gPlayer.drawTexture = TEXTURE_RUNNING;
 		gPlayer.velocity.left -= 0.2f;
-		/*		If player has let go of button.	*/
-		if(!state[SDL_SCANCODE_LEFT] && 
-			!getPlayerStatus(game, STATUS_AIRBORNE)){
-				setPlayerStatus(game, STATUS_SKIDDING, TRUE);
-				gPlayer.drawTexture = TEXTURE_SKIDDING;
-		}
 		/*		Stops player if running speed is negative  */
 		if(gPlayer.velocity.left < 0){
 			gPlayer.velocity.left = 0.0f;
 		}
 	}
 	
-	/*		Set status and texture for running.	*/
+	/*		Deacceleration.	*/
 	if(gPlayer.velocity.right > 0){
-		setPlayerStatus(game, STATUS_RUNNING, TRUE);
-		gPlayer.drawTexture = TEXTURE_RUNNING;
 		gPlayer.velocity.right -= 0.2f;
-		/*		If player has let go of button.	*/
-		if(!state[SDL_SCANCODE_RIGHT] && 
-			!getPlayerStatus(game, STATUS_AIRBORNE)){
-				setPlayerStatus(game, STATUS_SKIDDING, TRUE);
-				gPlayer.drawTexture = TEXTURE_SKIDDING;
-		}
 		/*		Stops player if running speed is negative  */
 		if(gPlayer.velocity.right < 0){
 			gPlayer.velocity.right = 0.0f;
 		}
 	}
+
+	gTimer++;
+	determinePlayerStatus(game, state);
+	gPlayer.drawTexture = determinePlayerTexture(game);
 	
-	/*		If player has stopped.	*/
-	if(!gPlayer.velocity.right && !gPlayer.velocity.left){
-		setPlayerStatus(game, STATUS_RUNNING, FALSE);
-		setPlayerStatus(game, STATUS_SKIDDING, FALSE);
-	}
 	
-	int playerFeet = gPlayer Y + gPlayer.hitbox.h;
 	
-	/*		If player is on or below (temporary) ground level	*/
-	if(playerFeet >= LANDLINE){
-		if(!getPlayerStatus(game, STATUS_RUNNING)){
-			gPlayer.drawTexture = TEXTURE_IDLE;
-		}
-		setPlayerStatus(game, STATUS_AIRBORNE, FALSE);
+	if(gPlayer Y + gPlayer.hitbox.h> LANDLINE){
 		gPlayer Y = LANDLINE - gPlayer.hitbox.h;
 	}
-	
-		/*		If player is airborne.	*/
-	if(getPlayerStatus(game, STATUS_AIRBORNE)){
-		gPlayer.drawTexture = TEXTURE_JUMP;
-		//gPlayer.angle = (double)getRandomAngle();
-	}
-	
-	gTimer++;
+
 	debugInfo(game);
 	return keepPlaying;
 }
@@ -173,13 +144,15 @@ void renderGame(game * game){
 		SDL_RenderCopy(gRen, gBomb(i).texture, NULL, &bombRect);
 	}
 
+	
 	animatePlayer(game);
 	SDL_RenderPresent(gRen);
+
 }
 
 void animatePlayer(game * game){
 	SDL_Rect textureRect = {0,0};
-	
+	int direction = getPlayerStatus(game, STATUS_FACINGLEFT);
 	int drawTexture = gPlayer.drawTexture;
 	SDL_Texture * texture = gPlayer.texture[drawTexture];
 	SDL_QueryTexture(texture, NULL, NULL, &textureRect.w, &textureRect.h);
@@ -202,7 +175,6 @@ void animatePlayer(game * game){
 	
 	textureRect.x = textureRect.w * gPlayer.frame;
 	
-	int direction = getPlayerStatus(game, STATUS_FACINGLEFT);
 	SDL_Rect playerRect = {gPlayer X, gPlayer Y, width, height};
 	SDL_RenderCopyEx(gRen, texture, &textureRect , &playerRect, gPlayer.angle, NULL, direction);
 }
@@ -216,4 +188,5 @@ void shutdownGame(game * game){
 	SDL_DestroyRenderer(gRen);
 	//Quit SDL
 	SDL_Quit();
+	printf("Shutting down SLD/Game!");
 }
