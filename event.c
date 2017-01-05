@@ -66,9 +66,11 @@ int processEvent(game *game){
 		;
 	}
 	
+	int bh;
+	SDL_QueryTexture(gBomb(0).texture, NULL, NULL, NULL, &bh);
 	/*		Affect bombs with gravity.		*/
 	for(int i=0;i<BOMBS;i++){
-		if(gBomb(i) Y < LANDLINE){
+		if(gBomb(i) Y + bh < LANDLINE){
 			gBomb(i) Y += gGravity;
 		}
 	}
@@ -95,6 +97,11 @@ int processEvent(game *game){
 		setPlayerStatus(game, STATUS_RUNNING, TRUE);
 		gPlayer.drawTexture = TEXTURE_RUNNING;
 		gPlayer.velocity.left -= 0.2f;
+		/*		If player has let go of button.	*/
+		if(!state[SDL_SCANCODE_LEFT]){
+			printf("SKIDDING LEFT \n");
+			gPlayer.drawTexture = TEXTURE_SKIDDING;
+		}
 		/*		Stops player if running speed is negative  */
 		if(gPlayer.velocity.left < 0){
 			gPlayer.velocity.left = 0.0f;
@@ -107,6 +114,11 @@ int processEvent(game *game){
 		setPlayerStatus(game, STATUS_RUNNING, TRUE);
 		gPlayer.drawTexture = TEXTURE_RUNNING;
 		gPlayer.velocity.right -= 0.2f;
+		/*		If player has let go of button.	*/
+		if(!state[SDL_SCANCODE_RIGHT]){
+			printf("SKIDDING RIGHT \n");
+			gPlayer.drawTexture = TEXTURE_SKIDDING;
+		}
 		/*		Stops player if running speed is negative  */
 		if(gPlayer.velocity.right < 0){
 			gPlayer.velocity.right = 0.0f;
@@ -161,7 +173,10 @@ void renderGame(game * game){
 	//Render bomb images
 	//Create rectangles to hold bombs image, same size as image: 250 x 250px
 	for(int i=0;i<BOMBS;i++){
-		SDL_Rect bombRect = {gBomb(i) X, gBomb(i) Y, 250/2, 250/2 };
+		SDL_Rect bombRect;
+		SDL_QueryTexture(gBomb(i).texture, NULL, NULL, &bombRect.w, &bombRect.h);
+		bombRect.x = gBomb(i) X;
+		bombRect.y = gBomb(i) Y;
 		SDL_RenderCopy(gRen, gBomb(i).texture, NULL, &bombRect);
 	}
 

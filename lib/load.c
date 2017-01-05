@@ -27,46 +27,34 @@ bool loadGame(game * game){
 
 
 bool loadTextures(game * game){
-		
+	bool success = 1;
 
-
-	
 	SDL_Surface *surface = NULL; //For holding image
 	//Loads images
 	surface = IMG_Load("art/player/girl.png");
-	if(surface == NULL){
-		printf("Can't load guy.png");
-		SDL_Quit();
-		return 0;
-	}
+	if(surface == NULL) success = 0;
 	gPlayer.texture[TEXTURE_IDLE] = SDL_CreateTextureFromSurface(gRen, surface);
 	gPlayer.textureFrameSize[TEXTURE_IDLE] = 17;
 	
 	surface = IMG_Load("art/player/girl_airborne.png");
-	if(surface == NULL){
-		printf("Can't load guy_jump.png");
-		SDL_Quit();
-		return 0;
-	}
-	
+	if(surface == NULL) success = 0;
 	gPlayer.texture[TEXTURE_JUMP] = SDL_CreateTextureFromSurface(gRen, surface);
 	gPlayer.textureFrameSize[TEXTURE_JUMP] = 2;
 
 	surface = IMG_Load("art/player/girl_running.png");
-	if(surface == NULL){
-		printf("Can't load guy_jump.png");
-		SDL_Quit();
-		return 0;
-	}
+	if(surface == NULL) success = 0;
 	gPlayer.texture[TEXTURE_RUNNING] = SDL_CreateTextureFromSurface(gRen, surface);
 	gPlayer.textureFrameSize[TEXTURE_RUNNING] = 14;
 	
+	surface = IMG_Load("art/player/girl_running_skid.png");
+	if(surface == NULL) success = 0;
+	gPlayer.texture[TEXTURE_SKIDDING] = SDL_CreateTextureFromSurface(gRen, surface);
+	gPlayer.textureFrameSize[TEXTURE_SKIDDING] = 15;
+	
+	//BOMBS
 	surface = IMG_Load("art/enemies/bomb.png");
-	if(surface == NULL){
-		printf("Can't load bomb.png");
-		SDL_Quit();
-		return 0;
-	}
+	if(surface == NULL) success = 0;
+	
 	/* Sets image to SDL_Texture "bomb" in game struct
 		Might be bad idea to set texture to every bomb/enemy in array... */
 	for(int i=0;i<BOMBS;i++){
@@ -76,5 +64,5 @@ bool loadTextures(game * game){
 	}
 	
 	SDL_FreeSurface(surface); //Unload, not needed anymore
-	return 1;
+	return success;
 }

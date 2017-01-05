@@ -42,7 +42,7 @@ enum {FALSE, TRUE};
 enum {OFF, ON};
 
 //Player textures
-enum {TEXTURE_IDLE, TEXTURE_RUNNING, TEXTURE_JUMP};
+enum {TEXTURE_IDLE, TEXTURE_RUNNING, TEXTURE_JUMP, TEXTURE_SKIDDING};
 
 typedef unsigned long long U64;
 
@@ -74,8 +74,8 @@ typedef struct{
 	position position;
 	hitbox hitbox;
 	short drawTexture;
-	short textureFrameSize[3];
-	SDL_Texture *texture[3];
+	short textureFrameSize[4];
+	SDL_Texture *texture[4];
 	short frame;
 }player;
 
