@@ -76,8 +76,8 @@ void determinePlayerStatus(game * game, const Uint8 *state){
 		}
 	}
 	
-	/*		PlayerFeet is lowest pixel to the left.	Hitbox varies. */
-	int playerFeet = gPlayer Y + gPlayer.hitbox.h;
+	/*		PlayerFeet is lowest pixel to the left. */
+	int playerFeet = gPlayer Y + PLAYER_FRAME_HEIGHT;
 	/*		If player is on or below (temporary) ground level	*/
 	if(playerFeet >= LANDLINE){
 		setPlayerStatus(game, STATUS_AIRBORNE, FALSE);
@@ -95,28 +95,32 @@ void determinePlayerStatus(game * game, const Uint8 *state){
 int determinePlayerTexture(game * game){
 	int texture = TEXTURE_IDLE;
 
-	if(getPlayerStatus(game, STATUS_RUNNING)){
-		texture = TEXTURE_RUNNING;
-	}
-	
-	if(getPlayerStatus(game, STATUS_SKIDDING)){
-		texture = TEXTURE_SKIDDING;
-	}
-	
-	if(getPlayerStatus(game, STATUS_DUCKING)){
-		texture = TEXTURE_DUCKING;
-	}
-	
-	if(getPlayerStatus(game, STATUS_AIRBORNE)){
-		texture = TEXTURE_JUMP;
-	}
-	
+	/*		Makes sure no other animation will play when attacking.	*/
 	if(getPlayerStatus(game, STATUS_ATTACKING_T)){
 		texture = TEXTURE_ATTACK_T;
 	}
 	
-	if(getPlayerStatus(game, STATUS_ATTACKING_S)){
+	else if(getPlayerStatus(game, STATUS_ATTACKING_S)){
 		texture = TEXTURE_ATTACK_S;
+	}
+	
+	/*		If not attacking.	*/
+	else{
+		if(getPlayerStatus(game, STATUS_RUNNING)){
+		texture = TEXTURE_RUNNING;
+		}
+		
+		if(getPlayerStatus(game, STATUS_SKIDDING)){
+			texture = TEXTURE_SKIDDING;
+		}
+		
+		if(getPlayerStatus(game, STATUS_DUCKING)){
+			texture = TEXTURE_DUCKING;
+		}
+		
+		if(getPlayerStatus(game, STATUS_AIRBORNE)){
+			texture = TEXTURE_JUMP;
+		}
 	}
 
 	return texture;
