@@ -4,9 +4,9 @@ void debugInfo(game * game){
 	if(gTimer % DEBUG_OUTPUT_SPEED == 0){
 		int playerFeet = gPlayer Y + gPlayer.hitbox.h;
 		if(DEBUG_MOVEMENT){
-			if(getPlayerStatus(game, STATUS_RUNNING)){
+			if(getStatus(game, ST_RUN)){
 				printf("[ Running ");
-				if(getPlayerStatus(game, STATUS_FACINGLEFT)){
+				if(getStatus(game, ST_LEFT)){
 					printf("Left ]");
 				}
 				else{
@@ -15,12 +15,12 @@ void debugInfo(game * game){
 				printf(" [Velocity L/R: %g/%g ] [Player X: %d ]\n", 
 					gPlayer.velocity.left, gPlayer.velocity.right, gPlayer X);
 			}
-			if(getPlayerStatus(game, STATUS_SKIDDING)){
+			if(getStatus(game, ST_SKID)){
 				printf(" [ Skidding! ] \n");
 			}
 		}
 		if(DEBUG_JUMPING){
-			if(getPlayerStatus(game, STATUS_AIRBORNE)){
+			if(getStatus(game, ST_AIR)){
 				printf("[ Jumping ] [Velocity: %g ] [Player Y: %d ] ", 
 					gPlayer.velocity.up, gPlayer Y);
 			}
@@ -34,10 +34,10 @@ void debugInfo(game * game){
 		printf("[ Under Landline! ] \n");
 		}
 		if(DEBUG_ATTACK){
-			if(getPlayerStatus(game, STATUS_ATTACKING_T)){
+			if(getStatus(game, ST_ATK_T)){
 				printf("[ Attacking: Thrust ]\n");
 			}
-			if(getPlayerStatus(game, STATUS_ATTACKING_S)){
+			if(getStatus(game, ST_ATK_S)){
 				printf("[ Attacking: Swing ]\n");
 			}
 		}

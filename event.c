@@ -20,24 +20,24 @@ int processEvent(game *game){
 						keepPlaying = 0;
 						break;
 					case SDLK_UP:
-						if(!getPlayerStatus(game, STATUS_AIRBORNE)){
-							setPlayerStatus(game, STATUS_AIRBORNE, TRUE);
+						if(!getStatus(game, ST_AIR)){
+							setStatus(game, ST_AIR, TRUE);
 							gPlayer.velocity.up = gPlayer.velocity.maxUp - 15;
 							gPlayer.velocity.down = 0;
 						}
 						break;
 					/* Sword Attack: Thrust  */
 					case SDLK_q:
-						if(!getPlayerStatus(game, STATUS_ATTACKING_T) &&
-								!getPlayerStatus(game, STATUS_ATTACKING_S)){
-							setPlayerStatus(game, STATUS_ATTACKING_T, TRUE);
+						if(!getStatus(game, ST_ATK_T) &&
+								!getStatus(game, ST_ATK_S)){
+							setStatus(game, ST_ATK_T, TRUE);
 						}
 						break;
 					/* Sword Attack: Swing  */
 					case SDLK_w:
-						if(!getPlayerStatus(game, STATUS_ATTACKING_S)
-								&& !getPlayerStatus(game, STATUS_ATTACKING_T)){
-							setPlayerStatus(game, STATUS_ATTACKING_S, TRUE);
+						if(!getStatus(game, ST_ATK_S)
+								&& !getStatus(game, ST_ATK_T)){
+							setStatus(game, ST_ATK_S, TRUE);
 						}
 						break;
 				}
@@ -53,15 +53,15 @@ int processEvent(game *game){
 	
 	/*  For "long jump".  */
 	if(state[SDL_SCANCODE_UP] 
-		&& getPlayerStatus(game, STATUS_AIRBORNE)){
+		&& getStatus(game, ST_AIR)){
 			gPlayer.velocity.up += 0.8f;
 	}
 	
 	/*  Left movement, accelerates until max speed.  */
 	if(state[SDL_SCANCODE_LEFT] 
-		&& !getPlayerStatus(game, STATUS_DUCKING)){
+		&& !getStatus(game, ST_DUCK)){
 			gPlayer.velocity.left+=1.5f;
-			setPlayerStatus(game, STATUS_FACINGLEFT, TRUE);
+			setStatus(game, ST_LEFT, TRUE);
 			if(gPlayer.velocity.left > gPlayer.velocity.maxLeft){
 				gPlayer.velocity.left = gPlayer.velocity.maxLeft;
 			}
@@ -69,7 +69,7 @@ int processEvent(game *game){
 	
 	/*  Right movement, accelerates until max speed.  */
 	if(state[SDL_SCANCODE_RIGHT] 
-		&& !getPlayerStatus(game, STATUS_DUCKING)){
+		&& !getStatus(game, ST_DUCK)){
 			gPlayer.velocity.right+=1.5f;
 			if(gPlayer.velocity.right > gPlayer.velocity.maxRight){
 				gPlayer.velocity.right = gPlayer.velocity.maxRight;
@@ -168,7 +168,7 @@ void renderGame(game * game){
 
 void renderPlayer(game * game){
 	SDL_Rect textureRect = {0,0};
-	int direction = getPlayerStatus(game, STATUS_FACINGLEFT);
+	int direction = getStatus(game, ST_LEFT);
 	int drawTexture = gPlayer.drawTexture;
 	SDL_Texture * texture = gPlayer.texture[drawTexture];
 	SDL_QueryTexture(texture, NULL, NULL, &textureRect.w, &textureRect.h);
@@ -205,7 +205,7 @@ void shutdownGame(game * game){
 		SDL_DestroyTexture(gBomb(i).texture);
 	}
 	
-	for(int i=TEXTURE_IDLE;i<=TEXTURE_ATTACK_S;i++){
+	for(int i=TE_IDLE;i<=TE_ATK_S;i++){
 		SDL_DestroyTexture(gPlayer.texture[i]);
 	}
 	

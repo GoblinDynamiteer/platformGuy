@@ -37,15 +37,15 @@
 #define gBomb(VAR) game -> bomb[VAR]
 
 /* Player Status flags */
-#define STATUS_AIRBORNE 1		// 0001
-#define STATUS_FACINGLEFT 2	// 0010
-#define STATUS_ALIVE 4			// 0100
-#define STATUS_RUNNING 8			// 1000
-#define STATUS_SKIDDING 16			// 1 0000
-#define STATUS_DUCKING 32			// 10 0000
-#define STATUS_ATTACKING_T 64			// 100 0000
-#define STATUS_ATTACKING_S 128			// 1000 0000
-#define STARTINGSTATUS 0
+#define ST_AIR 1		// 0001
+#define ST_LEFT 2	// 0010
+#define ST_ALIVE 4			// 0100
+#define ST_RUN 8			// 1000
+#define ST_SKID 16			// 1 0000
+#define ST_DUCK 32			// 10 0000
+#define ST_ATK_T 64			// 100 0000
+#define ST_ATK_S 128			// 1000 0000
+#define ST_INIT 0
 
 #define DEBUG_OUTPUT_SPEED 5
 #define DEBUG_MOVEMENT 0
@@ -57,7 +57,7 @@ enum {FALSE, TRUE};
 enum {OFF, ON};
 
 //Player textures
-enum {TEXTURE_IDLE, TEXTURE_RUNNING, TEXTURE_JUMP, TEXTURE_SKIDDING, TEXTURE_DUCKING, TEXTURE_JUMP_CLIPPED, TEXTURE_NULL, TEXTURE_ATTACK_T, TEXTURE_ATTACK_S};
+enum {TE_IDLE, TE_RUN, TE_AIR, TE_SKID, TE_DUCK, TE_NULL, TE_ATK_T, TE_ATK_S};
 
 typedef unsigned long long U64;
 
