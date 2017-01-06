@@ -200,6 +200,11 @@ void shutdownGame(game * game){
 	for(int i=0;i<BOMBS;i++){
 		SDL_DestroyTexture(gBomb(i).texture);
 	}
+	
+	for(int i=TEXTURE_IDLE;i<=TEXTURE_ATTACK_S;i++){
+		SDL_DestroyTexture(gPlayer.texture[i]);
+	}
+	
 	SDL_DestroyWindow(gWin);
 	SDL_DestroyRenderer(gRen);
 	//Quit SDL
