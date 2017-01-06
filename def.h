@@ -22,7 +22,6 @@
 #define JUMP_SPEED 20
 #define BOMBS 10
 
-
 #define gRen game -> renderer
 #define gWin game -> window
 #define gKey game -> keys
@@ -35,6 +34,11 @@
 #define W .hitbox.w
 #define H .hitbox.h
 #define gBomb(VAR) game -> bomb[VAR]
+
+/*	 "Get Texture Dimensions"	*/
+#define gtd(t,w,h) SDL_QueryTexture(t, NULL, NULL, w, h)
+
+
 
 /* Player Status flags */
 #define ST_AIR 1		// 0001
@@ -52,6 +56,10 @@
 #define DEBUG_JUMPING 0
 #define DEBUG_HITBOX 0
 #define DEBUG_ATTACK 1
+
+#define RKEY SDL_SCANCODE_RIGHT
+#define LKEY SDL_SCANCODE_LEFT
+#define DKEY SDL_SCANCODE_DOWN
 
 enum {FALSE, TRUE};
 enum {OFF, ON};
