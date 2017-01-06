@@ -32,6 +32,8 @@
 #define gTimer game -> timer
 #define X .position.x
 #define Y .position.y
+#define W .hitbox.w
+#define H .hitbox.h
 #define gBomb(VAR) game -> bomb[VAR]
 
 /* Player Status flags */
