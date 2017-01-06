@@ -129,7 +129,7 @@ void debugInfo(game * game);
 int processEvent(game *game);
 void renderGame(game * game);
 void shutdownGame(game * game);
-void animatePlayer(game * game);
+void renderPlayer(game * game);
 
 //load.c
 bool loadGame(game * game);

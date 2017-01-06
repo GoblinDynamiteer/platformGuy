@@ -156,13 +156,13 @@ void renderGame(game * game){
 		SDL_RenderCopy(gRen, gBomb(i).texture, NULL, &bombRect);
 	}
 
-	
-	animatePlayer(game);
+
+	renderPlayer(game);
 	SDL_RenderPresent(gRen);
 
 }
 
-void animatePlayer(game * game){
+void renderPlayer(game * game){
 	SDL_Rect textureRect = {0,0};
 	int direction = getPlayerStatus(game, STATUS_FACINGLEFT);
 	int drawTexture = gPlayer.drawTexture;
