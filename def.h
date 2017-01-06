@@ -27,6 +27,7 @@
 #define gWin game -> window
 #define gKey game -> keys
 #define gPlayer game -> player
+#define gLevel game -> level
 #define gGravity game -> gravity
 #define gTimer game -> timer
 #define X .position.x
@@ -99,6 +100,13 @@ typedef struct{
 }enemy;
 
 typedef struct{
+	SDL_Texture *texture;
+	SDL_Rect rect;
+	position position;
+	hitbox hitbox;
+}level;
+
+typedef struct{
 	player player;
 	enemy bomb[BOMBS];
 	SDL_Renderer *renderer;
@@ -106,6 +114,7 @@ typedef struct{
 	int gravity;
 	U64 timer;
 	keys keys;
+	level level;
 }game;
 
 
