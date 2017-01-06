@@ -123,8 +123,8 @@ typedef struct{
 /* FUNCTION DEFINITIONS */
 
 //status.c
-bool getPlayerStatus(game * game, int check);
-void setPlayerStatus(game * game, int status, bool onOff);
+bool getStatus(game * game, int check);
+void setStatus(game * game, int status, bool onOff);
 int determinePlayerTexture(game * game);
 void determinePlayerStatus(game * game, const Uint8 *state);
 
