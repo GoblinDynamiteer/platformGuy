@@ -86,6 +86,14 @@ bool loadTextures(game * game){
 		gBomb(i) X = getRandomWidth();
 		gBomb(i) Y = getRandomHeight() - WINDOW_HEIGHT / 2;;
 	}
+	
+	surface = IMG_Load("art/levels/ground/grass_stone.png");
+	if(surface == NULL) success = 0;
+	gLevel.texture = SDL_CreateTextureFromSurface(gRen, surface);
+	SDL_QueryTexture(gLevel.texture, NULL, NULL, &gLevel.rect.w, &gLevel.rect.h);
+	gLevel.rect.x = 0;
+	gLevel.rect.y = LANDLINE;
+	
 
 	SDL_FreeSurface(surface); //Unload, not needed anymore
 	return success;
