@@ -142,10 +142,14 @@ void renderGame(game * game){
 	SDL_SetRenderDrawColor(gRen, 0, 0, 255, 255);
 	SDL_RenderClear(gRen);
 	
-	SDL_SetRenderDrawColor(gRen, 255, 255, 255, 255);
-	SDL_Rect ground = {0, LANDLINE, WINDOW_WIDTH, 200};
-	SDL_RenderFillRect(gRen, &ground);
+	//SDL_SetRenderDrawColor(gRen, 255, 255, 255, 255);
+	//SDL_Rect ground = {0, LANDLINE, WINDOW_WIDTH, 200};
 	
+	for(gLevel.rect.x = 0; gLevel.rect.x < WINDOW_WIDTH * 2 ;
+		gLevel.rect.x += gLevel W - 1){
+			SDL_RenderCopy(gRen, gLevel.texture, NULL, &gLevel.rect);
+	}
+
 	//Render bomb images
 	//Create rectangles to hold bombs image, same size as image: 250 x 250px
 	for(int i=0;i<BOMBS;i++){
