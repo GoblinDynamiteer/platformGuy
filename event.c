@@ -148,9 +148,9 @@ void renderGame(game * game){
 	SDL_SetRenderDrawColor(gRen, 0, 0, 255, 255);
 	SDL_RenderClear(gRen);
 	
-	for(gLevel.rect.x = 0; gLevel.rect.x < WINDOW_WIDTH * 2 ;
-		gLevel.rect.x += gLevel W - 1){
-			SDL_RenderCopy(gRen, gLevel.texture, NULL, &gLevel.rect);
+	for(gLevel[LVL_G].rect.x = 0; gLevel[LVL_G].rect.x < WINDOW_WIDTH * 2 ;
+		gLevel[LVL_G].rect.x += gLevel[LVL_G] W - 1){
+			SDL_RenderCopy(gRen, gLevel[LVL_G].texture, NULL, &gLevel[LVL_G].rect);
 	}
 
 	/*	 	*/
