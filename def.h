@@ -118,6 +118,7 @@ typedef struct{
 	SDL_Rect rect;
 	position position;
 	hitbox hitbox;
+	bool collision;
 }level;
 
 typedef struct{
@@ -158,6 +159,11 @@ void renderPlayer(game * game);
 bool loadGame(game * game);
 bool loadTextures(game * game);
 
+/*	 world.c	*/
+bool checkCollisionX(game * game, float delta);
+bool checkCollisionY(game * game, float delta);
+
+/*	 texture.c	*/
 
 /* END GUARD */
 #endif
