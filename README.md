@@ -17,10 +17,14 @@ Features:
 - Ducking
 - Running
 - Jumping!
+- Obstacles!
 
 ---
 
 **Progress Screenshots:**
+
+Added ground texture and obstacle! 
+![More Textures](https://raw.githubusercontent.com/GoblinDynamiteer/platformGuy/master/img/girl_004.PNG)
 
 Animated character, exported from "Spriter Pro", platformer library   
 ![Animated char](https://raw.githubusercontent.com/GoblinDynamiteer/platformGuy/master/img/girl_001.PNG)
