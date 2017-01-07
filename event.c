@@ -87,15 +87,17 @@ int processEvent(game *game){
 	}
 	
 	/*		Affect player with gravity.		*/
-	float yCheck = gGravity - gPlayer.velocity.up + gPlayer.velocity.down;
-	if(checkCollisionY(game, yCheck)){
-		gPlayer Y += yCheck ;
+	int yCheck =  (int)gGravity - (int)gPlayer.velocity.up +  (int)gPlayer.velocity.down;
+	gPlayer Y += yCheck;
+	if(checkCollision(gPlayer.rect, gLevel[LVL_OB_P].rect)){
+		gPlayer Y -= yCheck;
 	}
-
+	
 	/*		Move player.		*/
-	float xCheck =  gPlayer.velocity.right - gPlayer.velocity.left;
-	if(checkCollisionX(game, xCheck)){
-		gPlayer X += xCheck;
+	int xCheck = (int)gPlayer.velocity.right - (int)gPlayer.velocity.left;
+	gPlayer X += xCheck;
+	if(checkCollision(gPlayer.rect, gLevel[LVL_OB_P].rect)){
+		gPlayer X -= xCheck;
 	}
 	
 	/*		Makes player falling faster each game loop.		*/

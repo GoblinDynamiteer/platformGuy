@@ -139,8 +139,7 @@ bool loadGame(game * game);
 bool loadTextures(game * game);
 
 /*	 world.c	*/
-bool checkCollisionX(game * game, float delta);
-bool checkCollisionY(game * game, float delta);
+bool checkCollision(SDL_Rect a, SDL_Rect b);
 
 /*	 texture.c	*/
 
