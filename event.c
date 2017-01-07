@@ -52,13 +52,13 @@ int processEvent(game *game){
 	const Uint8 *state = SDL_GetKeyboardState(NULL);
 	
 	/*  For "long jump".  */
-	if(state[SDL_SCANCODE_UP] 
+	if(state[UKEY] 
 		&& getStatus(game, ST_AIR)){
 			gPlayer.velocity.up += 0.8f;
 	}
 	
 	/*  Left movement, accelerates until max speed.  */
-	if(state[SDL_SCANCODE_LEFT] 
+	if(state[LKEY] 
 		&& !getStatus(game, ST_DUCK)){
 			gPlayer.velocity.left+=1.5f;
 			setStatus(game, ST_LEFT, TRUE);
@@ -68,7 +68,7 @@ int processEvent(game *game){
 	}
 	
 	/*  Right movement, accelerates until max speed.  */
-	if(state[SDL_SCANCODE_RIGHT] 
+	if(state[RKEY] 
 		&& !getStatus(game, ST_DUCK)){
 			gPlayer.velocity.right+=1.5f;
 			if(gPlayer.velocity.right > gPlayer.velocity.maxRight){
