@@ -65,8 +65,11 @@
 enum {FALSE, TRUE};
 enum {OFF, ON};
 
-//Player textures
-enum {TE_IDLE, TE_RUN, TE_AIR, TE_SKID, TE_DUCK, TE_NULL, TE_ATK_T, TE_ATK_S};
+/*	 Player Textures index, TE_MAX must be last!*/
+enum {TE_IDLE, TE_RUN, TE_AIR, TE_SKID, TE_DUCK, TE_NULL, TE_ATK_T, TE_ATK_S, TE_MAX};
+
+/*	 World Pieces Index, TE_WMAX must be last!*/
+enum {LVL_G, LVL_OB_P, LVL_MAX};
 
 typedef unsigned long long U64;
 
@@ -98,8 +101,8 @@ typedef struct{
 	position position;
 	hitbox hitbox;
 	short drawTexture;
-	short textureFrameSize[20];
-	SDL_Texture *texture[20];
+	short textureFrameSize[TE_MAX];
+	SDL_Texture *texture[TE_MAX];
 	short frame;
 }player;
 
@@ -125,7 +128,7 @@ typedef struct{
 	int gravity;
 	U64 timer;
 	keys keys;
-	level level;
+	level level[LVL_MAX];
 }game;
 
 
