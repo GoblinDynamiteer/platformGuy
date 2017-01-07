@@ -86,22 +86,18 @@ bool loadTextures(game * game){
 	if(surface == NULL) success = 0;
 	gLevel[LVL_G].texture = SDL_CreateTextureFromSurface(gRen, surface);
 	
-	gtd(gLevel[LVL_G].texture, &gLevel[LVL_G].rect.w, &gLevel[LVL_G].rect.h);
-	gLevel[LVL_G] W = gLevel[LVL_G].rect.w;
-	gLevel[LVL_G] H = gLevel[LVL_G].rect.h;
-	gLevel[LVL_G].rect.x = 0;
-	gLevel[LVL_G].rect.y = LANDLINE-25;
+	gtd(gLevel[LVL_G].texture, &gLevel[LVL_G] W, &gLevel[LVL_G] H);
+	gLevel[LVL_G] X = 0;
+	gLevel[LVL_G] Y = LANDLINE-25;
 	
 	/*	 Loads and sets texture and rectangle for the pillar texture	*/
 	surface = IMG_Load("art/levels/obstacles/pillar.png");
 	if(surface == NULL) success = 0;
 	gLevel[LVL_OB_P].texture = SDL_CreateTextureFromSurface(gRen, surface);
 	
-	gtd(gLevel[LVL_OB_P].texture, &gLevel[LVL_OB_P].rect.w, &gLevel[LVL_OB_P].rect.h);
-	gLevel[LVL_OB_P] W = gLevel[LVL_OB_P].rect.w;
-	gLevel[LVL_OB_P] H = gLevel[LVL_OB_P].rect.h;
-	gLevel[LVL_OB_P].rect.x = 0;
-	gLevel[LVL_OB_P].rect.y = LANDLINE-25;
+	gtd(gLevel[LVL_OB_P].texture, &gLevel[LVL_OB_P] W, &gLevel[LVL_OB_P] H);
+	gLevel[LVL_OB_P] X = WINDOW_WIDTH / 2 + 200;
+	gLevel[LVL_OB_P] Y = LANDLINE - gLevel[LVL_OB_P] H ;
 	
 
 	SDL_FreeSurface(surface); //Unload, not needed anymore
