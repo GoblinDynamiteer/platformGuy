@@ -33,7 +33,7 @@
 #define Y .position.y
 #define W .hitbox.w
 #define H .hitbox.h
-#define gBomb(VAR) game -> bomb[VAR]
+#define gBomb game -> bomb
 
 /*	 "Get Texture Dimensions"	*/
 #define gtd(t,w,h) SDL_QueryTexture(t, NULL, NULL, w, h)

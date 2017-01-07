@@ -76,9 +76,9 @@ bool loadTextures(game * game){
 	/* Sets image to SDL_Texture "bomb" in game struct
 		Might be bad idea to set texture to every bomb/enemy in array... */
 	for(int i=0;i<BOMBS;i++){
-		gBomb(i).texture = SDL_CreateTextureFromSurface(gRen, surface);
-		gBomb(i) X = getRandomWidth();
-		gBomb(i) Y = getRandomHeight() - WINDOW_HEIGHT / 2;;
+		gBomb[i].texture = SDL_CreateTextureFromSurface(gRen, surface);
+		gBomb[i] X = getRandomWidth();
+		gBomb[i] Y = getRandomHeight() - WINDOW_HEIGHT / 2;;
 	}
 	
 	/*	 Loads and sets texture and rectangle for the ground texture	*/

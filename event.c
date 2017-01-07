@@ -78,11 +78,11 @@ int processEvent(game *game){
 	
 
 	int bh;
-	SDL_QueryTexture(gBomb(0).texture, NULL, NULL, NULL, &bh);
+	SDL_QueryTexture(gBomb[0].texture, NULL, NULL, NULL, &bh);
 	/*		Affect bombs with gravity.		*/
 	for(int i=0;i<BOMBS;i++){
-		if(gBomb(i) Y + bh < LANDLINE){
-			gBomb(i) Y += gGravity;
+		if(gBomb[i] Y + bh < LANDLINE){
+			gBomb[i] Y += gGravity;
 		}
 	}
 	
@@ -142,22 +142,18 @@ void renderGame(game * game){
 	SDL_SetRenderDrawColor(gRen, 0, 0, 255, 255);
 	SDL_RenderClear(gRen);
 	
-	//SDL_SetRenderDrawColor(gRen, 255, 255, 255, 255);
-	//SDL_Rect ground = {0, LANDLINE, WINDOW_WIDTH, 200};
-	
 	for(gLevel.rect.x = 0; gLevel.rect.x < WINDOW_WIDTH * 2 ;
 		gLevel.rect.x += gLevel W - 1){
 			SDL_RenderCopy(gRen, gLevel.texture, NULL, &gLevel.rect);
 	}
 
-	//Render bomb images
-	//Create rectangles to hold bombs image, same size as image: 250 x 250px
+	/*	 	*/
 	for(int i=0;i<BOMBS;i++){
 		SDL_Rect bombRect;
-		SDL_QueryTexture(gBomb(i).texture, NULL, NULL, &bombRect.w, &bombRect.h);
-		bombRect.x = gBomb(i) X;
-		bombRect.y = gBomb(i) Y;
-		SDL_RenderCopy(gRen, gBomb(i).texture, NULL, &bombRect);
+		SDL_QueryTexture(gBomb[i].texture, NULL, NULL, &bombRect.w, &bombRect.h);
+		bombRect.x = gBomb[i] X;
+		bombRect.y = gBomb[i] Y;
+		SDL_RenderCopy(gRen, gBomb[i].texture, NULL, &bombRect);
 	}
 
 
@@ -202,7 +198,7 @@ void renderPlayer(game * game){
 //Shuts down game, destroys windows, textures, renderer
 void shutdownGame(game * game){
 	for(int i=0;i<BOMBS;i++){
-		SDL_DestroyTexture(gBomb(i).texture);
+		SDL_DestroyTexture(gBomb[i].texture);
 	}
 	
 	for(int i=TE_IDLE;i<=TE_ATK_S;i++){
