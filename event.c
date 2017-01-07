@@ -148,18 +148,19 @@ void renderGame(game * game){
 	SDL_SetRenderDrawColor(gRen, 0, 0, 255, 255);
 	SDL_RenderClear(gRen);
 	
-	for(gLevel[LVL_G].rect.x = 0; gLevel[LVL_G].rect.x < WINDOW_WIDTH * 2 ;
-		gLevel[LVL_G].rect.x += gLevel[LVL_G] W - 1){
+	/*	 Renders ground textures	*/
+	for(gLevel[LVL_G] X = 0; gLevel[LVL_G] X < WINDOW_WIDTH * 2 ;
+		gLevel[LVL_G] X += gLevel[LVL_G] W - 1){
 			SDL_RenderCopy(gRen, gLevel[LVL_G].texture, NULL, &gLevel[LVL_G].rect);
 	}
 
+	/*	 Renders pillar	*/
+	SDL_RenderCopy(gRen, gLevel[LVL_OB_P].texture, NULL, &gLevel[LVL_OB_P].rect);
+	
 	/*	 	*/
 	for(int i=0;i<BOMBS;i++){
-		SDL_Rect bombRect;
-		SDL_QueryTexture(gBomb[i].texture, NULL, NULL, &bombRect.w, &bombRect.h);
-		bombRect.x = gBomb[i] X;
-		bombRect.y = gBomb[i] Y;
-		SDL_RenderCopy(gRen, gBomb[i].texture, NULL, &bombRect);
+		gtd(gBomb[i].texture, &gBomb[i] W, &gBomb[i] H);
+		SDL_RenderCopy(gRen, gBomb[i].texture, NULL, &gBomb[i].rect);
 	}
 
 
@@ -178,7 +179,7 @@ void renderPlayer(game * game){
 	int maxFrames = gPlayer.textureFrameSize[drawTexture];
 	textureRect.w /= maxFrames;
 	
-	gPlayer.hitbox.h = textureRect.h;
+	gPlayer H = textureRect.h;
 	
 	int width = textureRect.w;
 	int height = textureRect.h;

@@ -19,20 +19,19 @@
 #define PLAYER_FRAME_HEIGHT 280
 #define PLAYER_FRAME_WIDTH 197
 #define LANDLINE 900
-#define JUMP_SPEED 20
+#define JUMP_SPEED 40
 #define BOMBS 10
 
 #define gRen game -> renderer
 #define gWin game -> window
-#define gKey game -> keys
 #define gPlayer game -> player
 #define gLevel game -> level
 #define gGravity game -> gravity
 #define gTimer game -> timer
-#define X .position.x
-#define Y .position.y
-#define W .hitbox.w
-#define H .hitbox.h
+#define X .rect.x
+#define Y .rect.y
+#define W .rect.w
+#define H .rect.h
 #define gBomb game -> bomb
 
 /*	 "Get Texture Dimensions"	*/
@@ -74,32 +73,16 @@ enum {LVL_G, LVL_OB_P, LVL_MAX};
 typedef unsigned long long U64;
 
 /* STRUCTS */
-//Positions for player and monsters etc
-typedef struct{
-	int x,y;
-}position;
-
-typedef struct{
-	bool upKeyReleased;
-}keys;
-
 typedef struct{
 	float left, right, up, down;
 	float maxUp, maxDown, maxLeft, maxRight;
 }velocity;
 
 typedef struct{
-	int w, h;
-}hitbox;
-
-typedef struct{
-	//short life;
 	double angle;
 	U64 status; //Airborne, facing, alive etc
 	velocity velocity;
-	//char *name;
-	position position;
-	hitbox hitbox;
+	SDL_Rect rect;
 	short drawTexture;
 	short textureFrameSize[TE_MAX];
 	SDL_Texture *texture[TE_MAX];
@@ -110,15 +93,12 @@ typedef struct{
 	//short fallfactor;
 	SDL_Texture *texture;
 	//char *name;
-	position position;
+	SDL_Rect rect;
 }enemy;
 
 typedef struct{
 	SDL_Texture *texture;
 	SDL_Rect rect;
-	position position;
-	hitbox hitbox;
-	bool collision;
 }level;
 
 typedef struct{
@@ -128,7 +108,6 @@ typedef struct{
 	SDL_Window *window;
 	int gravity;
 	U64 timer;
-	keys keys;
 	level level[LVL_MAX];
 }game;
 

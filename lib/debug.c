@@ -2,7 +2,7 @@
 
 void debugInfo(game * game){
 	if(gTimer % DEBUG_OUTPUT_SPEED == 0){
-		int playerFeet = gPlayer Y + gPlayer.hitbox.h;
+		int playerFeet = gPlayer Y + gPlayer H;
 		if(DEBUG_MOVEMENT){
 			if(getStatus(game, ST_RUN)){
 				printf("[ Running ");
@@ -28,7 +28,7 @@ void debugInfo(game * game){
 		}
 		if(DEBUG_HITBOX){
 			printf("[ Player Hitbox H/W: %d/%d ]\n",
-				gPlayer.hitbox.h, gPlayer.hitbox.w);
+				gPlayer H, gPlayer W);
 		}
 		if(playerFeet>LANDLINE){
 		printf("[ Under Landline! ] \n");
