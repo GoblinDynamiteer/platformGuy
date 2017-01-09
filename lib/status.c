@@ -76,15 +76,8 @@ void determinePlayerStatus(game * game, const Uint8 *state){
 		}
 	}
 	
-	/*		PlayerFeet is lowest pixel to the left. */
-	int playerFeet = gPlayer Y + PLAYER_FRAME_HEIGHT;
-	/*		If player is on or below (temporary) ground level	*/
-	if(playerFeet >= LANDLINE){
-		setStatus(game, ST_AIR, FALSE);
-	}
-	/*		Player is in the air.	*/
-	else{
-		setStatus(game, ST_AIR, TRUE);
+	/*		event.c sets air status.	*/
+	if(getStatus(game, ST_AIR)){
 		setStatus(game, ST_SKID, FALSE);
 		setStatus(game, ST_DUCK, FALSE);
 	}

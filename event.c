@@ -91,6 +91,7 @@ int processEvent(game *game){
 	gPlayer Y += yCheck;
 	if(checkCollision(gPlayer.rect, gLevel[LVL_OB_P].rect)){
 		gPlayer Y -= yCheck;
+		setStatus(game, ST_AIR, FALSE);
 	}
 	
 	/*		Move player.		*/
@@ -139,6 +140,7 @@ int processEvent(game *game){
 	/*		Build collision detection instead of this 	*/
 	if(gPlayer Y + PLAYER_FRAME_HEIGHT> LANDLINE){
 		gPlayer Y = LANDLINE - PLAYER_FRAME_HEIGHT;
+		setStatus(game, ST_AIR, FALSE);
 	}
 
 	debugInfo(game);
