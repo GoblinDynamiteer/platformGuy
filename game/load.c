@@ -18,6 +18,7 @@ bool loadGame(game * game){
 	}
 
 	game->player.status[IDLE] = 1;
+	game->player.direction = RIGHT;
 
 	/*	 Frames in each animation.	*/
 	game->player.maxFrames[IDLE] = 17;

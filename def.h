@@ -23,7 +23,7 @@ enum {IDLE, AIR, RUN, SKID, DUCK, ATK1, ATK2};
 #define STATUS_MAX 7
 
 /*	 Movement	*/
-enum {LEFT, RIGHT};
+enum {RIGHT, LEFT};
 #define RUN_ACC 0.35
 #define RUN_FRIC 0.15
 
@@ -44,6 +44,7 @@ typedef struct player{
 	int currentFrame[STATUS_MAX];
 	SDL_Rect rect;
 	xy speed;
+	bool direction;
 }player;
 
 typedef struct game{

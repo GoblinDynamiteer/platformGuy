@@ -39,10 +39,12 @@ bool getEvents(game * game){
 
 	if(state[SDL_SCANCODE_RIGHT]){
 		playerSpeed(game, RIGHT);
+		game->player.direction = RIGHT;
 	}
 
 	if(state[SDL_SCANCODE_LEFT]){
 		playerSpeed(game, LEFT);
+		game->player.direction = LEFT;
 	}
 	printf("Speed: %g\n",game->player.speed.x);
 	movePlayer(game);

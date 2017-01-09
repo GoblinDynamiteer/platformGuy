@@ -34,7 +34,7 @@ void drawPlayer(game * game){
 			&game->player.rect,
 			0.0,
 			NULL,
-			SDL_FLIP_NONE
+			game->player.direction
 	);
 
 }
