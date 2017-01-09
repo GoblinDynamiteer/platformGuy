@@ -24,10 +24,11 @@ enum {IDLE, AIR, RUN, SKID, DUCK, ATK1, ATK2};
 
 /*	 Movement	*/
 enum {LEFT, RIGHT};
-#define RUN_ACC 0.15
+#define RUN_ACC 0.35
+#define RUN_FRIC 0.15
 
 /*	 Min/Max values	*/
-#define MAX_SPEED 25.0
+#define MAX_SPEED 6.0
 #define MIN_SPEED 0.0
 
 /*	 Structs	*/
@@ -66,6 +67,7 @@ void drawPlayer(game * game);
 /*	 player.c	*/
 void playerSpeed(game * game, bool direction);
 void movePlayer(game * game);
+void slowPlayer(game * game);
 
 #endif
 
