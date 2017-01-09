@@ -40,14 +40,14 @@
 
 
 /* Player Status flags */
-#define ST_AIR 1		// 0001
-#define ST_LEFT 2	// 0010
+#define ST_AIR 1			// 0001
+#define ST_LEFT 2			// 0010
 #define ST_ALIVE 4			// 0100
 #define ST_RUN 8			// 1000
 #define ST_SKID 16			// 1 0000
 #define ST_DUCK 32			// 10 0000
 #define ST_ATK_T 64			// 100 0000
-#define ST_ATK_S 128			// 1000 0000
+#define ST_ATK_S 128		// 1000 0000
 #define ST_INIT 0
 
 #define DEBUG_OUTPUT_SPEED 5

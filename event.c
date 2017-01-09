@@ -137,7 +137,7 @@ int processEvent(game *game){
 	determinePlayerStatus(game, state);
 	gPlayer.drawTexture = determinePlayerTexture(game);
 	
-	/*		Build collision detection instead of this 	*/
+	/*		Use collision detection instead of this 	*/
 	if(gPlayer Y + PLAYER_FRAME_HEIGHT> LANDLINE){
 		gPlayer Y = LANDLINE - PLAYER_FRAME_HEIGHT;
 		setStatus(game, ST_AIR, FALSE);
