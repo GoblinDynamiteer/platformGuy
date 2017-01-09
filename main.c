@@ -1,48 +1,47 @@
 #include "def.h"
 
 int main(int argc, char* args[]){
-	//Seed random
-	srand((int)time(NULL)); 
-	
-/* 	for(int i = 0; i<300;i++){
-		printf("Wrand %d \n", rand() % WINDOW_WIDTH);
-		printf("Hrand %d \n", rand() % WINDOW_HEIGHT);
-	} */
-	
-	//Declare window and renderer
-	SDL_Window *window;
-	SDL_Renderer *renderer;
 
-	//Start SDL system
+	/*	 Start SDL Systems	*/
 	SDL_Init(SDL_INIT_EVERYTHING);
     IMG_Init(IMG_INIT_PNG);
+
+	/*	 Declare window and renderer	*/
+	SDL_Window *window;
+	SDL_Renderer *renderer;
 	
-	//Creates the window
-	window = SDL_CreateWindow("PlatformGuy", 
-					SDL_WINDOWPOS_UNDEFINED, 
-					SDL_WINDOWPOS_UNDEFINED, 
-					WINDOW_WIDTH, 
-					WINDOW_HEIGHT, 
-					0);
+    /*	 Create window	*/
+	window = SDL_CreateWindow(
+		"PlatformGuy",
+		SDL_WINDOWPOS_UNDEFINED,
+		SDL_WINDOWPOS_UNDEFINED,
+		WINDOW_WIDTH,
+		WINDOW_HEIGHT,
+		0
+	);
 
-	// character '|' combines flags SDL_RENDERER_PRESENTVSYNC = VSYNC, SDL_RENDERER_ACCELERATED = GPU ACC
-	renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+	/*	 Create renderer	*/
+	renderer = SDL_CreateRenderer(
+		window,
+		-1,
+		RENDERER_FLAGS
+	);
 
-	//Starts game struct
+	/*	 Game struct	*/
 	game game;
 	game.renderer = renderer;
 	game.window = window;
 
-	if(!loadGame(&game) || !loadTextures(&game)){
-		shutdownGame(&game);
-		return 0;
+	/*	 Load art, set starting status	*/
+	if(loadGame(&game) && loadTextures(&game)){
+		/*	 Game loop	*/
+		while(getEvents(&game)){
+			renderGame(&game);
+			/*	 60 fps	*/
+			SDL_Delay(1000 / 60);
+		}
 	}
 
-	//game loop
-	while(processEvent(&game)){
-		renderGame(&game);
-	}
-	
-	shutdownGame(&game);
+	//shutdownGame(&game);
 	return 0;
 }
