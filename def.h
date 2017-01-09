@@ -27,8 +27,8 @@ enum {LEFT, RIGHT};
 #define RUN_ACC 0.15
 
 /*	 Min/Max values	*/
-#define MAX_SPEED 25.0;
-#define MIN_SPEED 0.0;
+#define MAX_SPEED 25.0
+#define MIN_SPEED 0.0
 
 /*	 Structs	*/
 typedef struct xy{
