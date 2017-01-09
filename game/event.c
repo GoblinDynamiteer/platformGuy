@@ -44,8 +44,9 @@ bool getEvents(game * game){
 	if(state[SDL_SCANCODE_LEFT]){
 		playerSpeed(game, LEFT);
 	}
-
+	printf("Speed: %g\n",game->player.speed.x);
 	movePlayer(game);
+	slowPlayer(game);
 	// SDL_HasIntersection
 	return 1;
 }

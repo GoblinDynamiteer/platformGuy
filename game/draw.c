@@ -27,8 +27,6 @@ void drawPlayer(game * game){
 	src.x = game->player.rect.x;
 	src.x = src.w * 1;
 
-	printf("src.x %d src.y %d src.w %d src.h %d\n",src.x, src.y, src.w, src.h);
-
 	SDL_RenderCopyEx(
 			game->renderer,
 			game->player.texture[IDLE],

@@ -36,7 +36,7 @@ bool loadGame(game * game){
 	game->player.rect.w = 195;
 	game->player.rect.h = 280;
 
-	/*	 Starting player velocity	*/
+	/*	 Player velocity	*/
 	game->player.speed.x = 0.0;
 	game->player.speed.y = 0.0;
 
