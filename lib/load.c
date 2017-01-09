@@ -19,9 +19,9 @@ bool loadGame(game * game){
 	gPlayer.velocity.maxDown = 40.0f;
 	gPlayer.velocity.maxLeft = 8.0f;
 	gPlayer.velocity.maxRight = 8.0f;
-	gKey.upKeyReleased = 1;
 	gPlayer.drawTexture = TE_IDLE;
 	gTimer = 1ULL; //UNSIGNED LONG LONG
+	
 	return 1;
 }
 
