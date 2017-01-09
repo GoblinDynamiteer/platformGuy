@@ -8,6 +8,8 @@
 #include "..\def.h"
 
 void playerSpeed(game * game, bool direction){
+	game->player.status[RUN] = 1;
+
 	if(direction == LEFT){
 		game->player.speed.x -= RUN_ACC;
 		if(fabs(game->player.speed.x) >= MAX_SPEED){
@@ -36,5 +38,7 @@ void slowPlayer(game * game){
 
 	if(fabs(game->player.speed.x) < 0.1){
 		game->player.speed.x = 0.0;
+		game->player.status[RUN] = 0;
 	}
 }
+
