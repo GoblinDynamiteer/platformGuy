@@ -19,19 +19,30 @@ void renderGame(game * game){
 
 void drawPlayer(game * game){
 
+	/*	 Source and destination rectangles	*/
 	SDL_Rect src = {0,0,0,0};
+	SDL_Rect dest = {0,0,0,0};
 
-	SDL_QueryTexture(game->player.texture[IDLE], NULL, NULL, &src.w, &src.h);
+	/*	 Gets height and width from image	*/
+	SDL_QueryTexture(game->player.texture[AIR], NULL, NULL, &src.w, &src.h);
 
-	src.w /= game->player.maxFrames[IDLE];
+	/*	 Get correct frame in sprite sheet	*/
+	src.w /= game->player.maxFrames[AIR];
 	src.x = game->player.rect.x;
 	src.x = src.w * 1;
 
+	/*	 Set destination rectangle values, middle of player rectangle	*/
+	dest.w = src.w;
+	dest.h = src.h;
+	dest.x = game->player.rect.x - game->player.rect.w /2;
+	dest.y = game->player.rect.y - game->player.rect.h /2;
+
+	/*	 Draw part of texture in src rectangle to dest rectangle	*/
 	SDL_RenderCopyEx(
 			game->renderer,
-			game->player.texture[IDLE],
+			game->player.texture[AIR],
 			&src,
-			&game->player.rect,
+			&dest,
 			0.0,
 			NULL,
 			game->player.direction
