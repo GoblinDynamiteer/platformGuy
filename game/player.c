@@ -25,3 +25,16 @@ void playerSpeed(game * game, bool direction){
 void movePlayer(game * game){
 	game->player.rect.x += game->player.speed.x;
 }
+
+void slowPlayer(game * game){
+	if(game->player.speed.x > 0){
+		game->player.speed.x -= RUN_FRIC;
+	}
+	else if(game->player.speed.x < 0){
+		game->player.speed.x += RUN_FRIC;
+	}
+
+	if(fabs(game->player.speed.x) < 0.1){
+		game->player.speed.x = 0.0;
+	}
+}
