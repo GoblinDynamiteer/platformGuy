@@ -28,9 +28,11 @@ void playerMove(game * game){
 	game->player.rect.x += game->player.speed.x;
 
 	game->player.rect.y += game->player.speed.y;
-	if(!checkCollision(game)){
+	if(checkCollision(game)){
 		game->player.status[AIR] = FALSE;
-		game->player.rect.y -= game->player.speed.y;
+		while(checkCollision(game)){
+			game->player.rect.y--;
+		}
 	}
 }
 

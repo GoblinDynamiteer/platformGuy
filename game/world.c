@@ -8,8 +8,9 @@
 #include "..\def.h"
 
 bool checkCollision(game * game){
-	if(game->player.rect.y > 600){
-		return 0;
+
+	if(SDL_HasIntersection(&game->player.rect, &game->world.rect) == SDL_TRUE){
+		return 1;
 	}
-	return 1;
+	return 0;
 }
