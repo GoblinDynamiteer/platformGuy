@@ -58,6 +58,7 @@ typedef struct game{
 	SDL_Renderer * renderer;
 	SDL_Window * window;
 	player player;
+	Uint64 timer;
 }game;
 
 /*	 Functions	*/

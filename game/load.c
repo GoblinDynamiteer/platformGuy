@@ -41,6 +41,8 @@ bool loadGame(game * game){
 	game->player.speed.x = 0.0;
 	game->player.speed.y = 0.0;
 
+	game->timer = 0ull;
+
 	return 1;
 }
 

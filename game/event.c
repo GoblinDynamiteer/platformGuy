@@ -8,17 +8,15 @@
 #include "..\def.h"
 
 bool getEvents(game * game){
-
+	game->timer++;
 	SDL_Event event;
 		while(SDL_PollEvent(&event)){
 			switch(event.type){
 				/*	 Exit button pressed on window	*/
 				case SDL_WINDOWEVENT_CLOSE:
-					if(game->window){
-						SDL_DestroyWindow(game->window);
-						game->window = NULL;
-						return 0;
-					}
+					SDL_DestroyWindow(game->window);
+					game->window = NULL;
+					return 0;
 					break;
 				/*	 A key has been pressed down	*/
 				case SDL_KEYDOWN:

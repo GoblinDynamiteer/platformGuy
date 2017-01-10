@@ -69,6 +69,9 @@ void playerJump(game * game){
 	}
 
 	game->player.speed.y += JUMP_ACC;
+	if(game->timer % 4 == 0){
+		printf("Acc speed Up: %g\n");
+	}
 
 }
 
