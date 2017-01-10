@@ -13,8 +13,8 @@
 #include <math.h>
 
 /*	 Window dimensions	*/
-#define WINDOW_WIDTH 1280
-#define WINDOW_HEIGHT 800
+#define WINDOW_WIDTH 1920
+#define WINDOW_HEIGHT 1080
 
 /*	 Renderer flags	*/
 #define RENDERER_FLAGS SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC
@@ -33,6 +33,7 @@ enum {RIGHT, LEFT};
 #define MAX_SPEED 9.5
 #define MAX_FALL_SPEED 18.0
 #define MIN_SPEED 0.0
+#define MAX_JUMP_SPEED 25.0
 #define JUMP_STR 19.5
 #define GRAV 1.2
 
