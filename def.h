@@ -67,7 +67,7 @@ typedef struct game{
 	SDL_Window * window;
 	player player;
 	Uint64 timer;
-	world world;
+	world ground;
 }game;
 
 /*	 Functions	*/

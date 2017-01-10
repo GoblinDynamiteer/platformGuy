@@ -9,7 +9,7 @@
 
 bool checkCollision(game * game){
 
-	if(SDL_HasIntersection(&game->player.rect, &game->world.rect) == SDL_TRUE){
+	if(SDL_HasIntersection(&game->player.rect, &game->ground.rect) == SDL_TRUE){
 		return 1;
 	}
 	return 0;

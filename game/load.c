@@ -80,9 +80,9 @@ bool loadTextures(game * game){
 }
 
 void loadWorld(game * game){
-	game->world.rect.x = 0;
-	game->world.rect.y = 900;
-	game->world.rect.w = WINDOW_WIDTH;
-	game->world.rect.h = WINDOW_HEIGHT-game->world.rect.y;
+	game->ground.rect.x = 0;
+	game->ground.rect.y = 900;
+	game->ground.rect.w = WINDOW_WIDTH;
+	game->ground.rect.h = WINDOW_HEIGHT-game->ground.rect.y;
 
 }
