@@ -1,1 +1,1 @@
-gcc main.c game\draw.c game\load.c game\event.c game\player.c -o platform -lmingw32 -lSDL2main -lSDL2 -lSDL2_image 
+gcc main.c game\draw.c game\load.c game\event.c game\player.c game\world.c -o platform -lmingw32 -lSDL2main -lSDL2 -lSDL2_image 
