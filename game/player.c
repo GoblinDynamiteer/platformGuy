@@ -26,9 +26,25 @@ void playerSetSpeed(game * game, bool direction){
 
 void playerMove(game * game){
 	game->player.rect.x += game->player.speed.x;
+
+	game->player.rect.y += game->player.speed.y;
+	if(!checkCollision(game)){
+		game->player.status[AIR] = FALSE;
+		game->player.rect.y -= game->player.speed.y;
+	}
 }
 
 void playerSlow(game * game){
+
+	/*	 Affect player with gravity	*/
+	game->player.speed.y += GRAV;
+
+	/*	 Limit falling speed	*/
+	if(game->player.speed.y > MAX_FALL_SPEED){
+		game->player.speed.y = MAX_FALL_SPEED;
+	}
+
+	/*	 Slow down running	*/
 	if(game->player.speed.x > 0){
 		game->player.speed.x -= RUN_FRIC;
 	}
@@ -36,6 +52,7 @@ void playerSlow(game * game){
 		game->player.speed.x += RUN_FRIC;
 	}
 
+	/*	 Stop player	*/
 	if(fabs(game->player.speed.x) < 0.1){
 		game->player.speed.x = 0.0;
 		game->player.status[RUN] = 0;
