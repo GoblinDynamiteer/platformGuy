@@ -68,9 +68,12 @@ void playerJump(game * game){
 		game->player.status[AIR] = 1;
 	}
 
-	game->player.speed.y += JUMP_ACC;
 	if(game->timer % 4 == 0){
 		printf("Acc speed Up: %g\n");
+	}
+	game->player.speed.y -= JUMP_ACC;
+	if(game->player.speed.y >= MAX_JUMP_SPEED){
+		game->player.speed.y = MAX_JUMP_SPEED;
 	}
 
 }
