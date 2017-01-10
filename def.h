@@ -10,10 +10,11 @@
 #include <stdlib.h>
 #include <time.h>
 #include <stdbool.h>
+#include <math.h>
 
 /*	 Window dimensions	*/
-#define WINDOW_WIDTH 1920
-#define WINDOW_HEIGHT 1080
+#define WINDOW_WIDTH 1280
+#define WINDOW_HEIGHT 800
 
 /*	 Renderer flags	*/
 #define RENDERER_FLAGS SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC
@@ -24,12 +25,18 @@ enum {IDLE, AIR, RUN, SKID, DUCK, ATK1, ATK2};
 
 /*	 Movement	*/
 enum {RIGHT, LEFT};
-#define RUN_ACC 0.35
-#define RUN_FRIC 0.15
+#define RUN_ACC 0.85
+#define RUN_FRIC 0.25
+#define JUMP_ACC 0.6
 
 /*	 Min/Max values	*/
-#define MAX_SPEED 6.0
+#define MAX_SPEED 9.5
+#define MAX_FALL_SPEED 18.0
 #define MIN_SPEED 0.0
+#define JUMP_STR 19.5
+#define GRAV 1.2
+
+enum {FALSE, TRUE};
 
 /*	 Structs	*/
 typedef struct xy{
@@ -66,7 +73,6 @@ void renderGame(game * game);
 void drawPlayer(game * game);
 
 /*	 player.c	*/
-bool getPlayerDirection(game * game);
 void playerSetSpeed(game * game, bool direction);
 void playerMove(game * game);
 void playerSlow(game * game);
