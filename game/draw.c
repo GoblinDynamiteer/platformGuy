@@ -24,15 +24,18 @@ void drawPlayer(game * game){
 	SDL_Rect src = {0,0,0,0};
 	SDL_Rect dest = {0,0,0,0};
 
+	/*	 Get texture to draw, depending on player activity	*/
+	int i = determineTexture(game);
+
 	/*	 Gets height and width from image	*/
-	SDL_QueryTexture(game->player.texture[AIR], NULL, NULL, &src.w, &src.h);
+	SDL_QueryTexture(game->player.texture[i], NULL, NULL, &src.w, &src.h);
 
 	/*	 Get correct frame in sprite sheet	*/
-	src.w /= game->player.maxFrames[AIR];
+	src.w /= game->player.maxFrames[i];
 	src.x = game->player.rect.x;
-	src.x = src.w * 1;
+	src.x = src.w * getFrame(game, i);
 
-	/*	 To player all textures at same lower position	*/
+	/*	 Set all textures at same lower position	*/
 	int heightDifference = game->player.rect.h - src.h;
 
 	/*	 Set destination rectangle values, middle of player rectangle	*/
@@ -48,7 +51,7 @@ void drawPlayer(game * game){
 	/*	 Draw part of texture in src rectangle to dest rectangle	*/
 	SDL_RenderCopyEx(
 			game->renderer,
-			game->player.texture[AIR],
+			game->player.texture[i],
 			&src,
 			&dest,
 			0.0,
@@ -58,11 +61,41 @@ void drawPlayer(game * game){
 
 }
 
-
 void drawWorld(game * game){
 	/*	 White colour	*/
 	SDL_SetRenderDrawColor(game->renderer, 255, 255, 255, 255);
 
-	SDL_RenderFillRect(game->renderer, &game->world.rect);
+	SDL_RenderFillRect(game->renderer, &game->ground.rect);
 }
 
+int determineTexture(game * game){
+	if(game->player.status[ATK1]){
+		return ATK1;
+	}
+	else if(game->player.status[ATK2]){
+		return ATK2;
+	}
+	else if(game->player.status[AIR]){
+		return AIR;
+	}
+	else if(game->player.status[RUN]){
+		return RUN;
+	}
+	else{
+		return IDLE;
+	}
+	return 0;
+}
+
+int getFrame(game * game, int texture){
+	if(game->timer % FRAME_UPDATE_SPEED == 0){
+		game->player.currentFrame[texture]++;
+		if(game->player.currentFrame[texture] >
+			game->player.maxFrames[texture] - 1){
+				game->player.currentFrame[texture] = 0;
+		}
+		printf("Drawing frame: %d of %d \n", game->player.currentFrame[texture] +1, game->player.maxFrames[texture]);
+	}
+
+	return game->player.currentFrame[texture];
+}

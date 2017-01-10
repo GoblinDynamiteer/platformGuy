@@ -23,6 +23,8 @@
 enum {IDLE, AIR, RUN, SKID, DUCK, ATK1, ATK2};
 #define STATUS_MAX 7
 
+#define FRAME_UPDATE_SPEED 4
+
 /*	 Movement	*/
 enum {RIGHT, LEFT};
 #define RUN_ACC 0.85
@@ -83,6 +85,8 @@ bool getEvents(game * game);
 void renderGame(game * game);
 void drawPlayer(game * game);
 void drawWorld(game * game);
+int determineTexture(game * game);
+int getFrame(game * game, int texture);
 
 /*	 player.c	*/
 void playerSetSpeed(game * game, bool direction);
