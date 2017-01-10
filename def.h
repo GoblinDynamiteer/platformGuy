@@ -70,6 +70,8 @@ void playerSpeed(game * game, bool direction);
 void movePlayer(game * game);
 void slowPlayer(game * game);
 bool getPlayerDirection(game * game);
+/*	 world.c	*/
+bool checkCollision(game * game);
 
 #endif
 
