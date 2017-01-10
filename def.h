@@ -71,6 +71,7 @@ bool getEvents(game * game);
 /*	 draw.c	*/
 void renderGame(game * game);
 void drawPlayer(game * game);
+void drawWorld(game * game);
 
 /*	 player.c	*/
 void playerSetSpeed(game * game, bool direction);
