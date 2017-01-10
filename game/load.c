@@ -43,6 +43,8 @@ bool loadGame(game * game){
 
 	game->timer = 0ull;
 
+	loadWorld(game);
+
 	return 1;
 }
 
@@ -75,4 +77,12 @@ bool loadTextures(game * game){
 
 	SDL_FreeSurface(surface);
 	return 1;
+}
+
+void loadWorld(game * game){
+	game->world.rect.x = 0;
+	game->world.rect.y = 900;
+	game->world.rect.w = WINDOW_WIDTH;
+	game->world.rect.h = WINDOW_HEIGHT-game->world.rect.y;
+
 }

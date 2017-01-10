@@ -55,17 +55,26 @@ typedef struct player{
 	bool direction;
 }player;
 
+typedef struct worldPieces{
+	SDL_Rect rect;
+	bool obstacle;
+	SDL_Texture * texture;
+}world;
+
+
 typedef struct game{
 	SDL_Renderer * renderer;
 	SDL_Window * window;
 	player player;
 	Uint64 timer;
+	world world;
 }game;
 
 /*	 Functions	*/
 /*	 load.c	*/
 bool loadGame(game * game);
 bool loadTextures(game * game);
+void loadWorld(game * game);
 
 /*	 event.c	*/
 bool getEvents(game * game);
