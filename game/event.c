@@ -27,7 +27,7 @@ bool getEvents(game * game){
 						case SDLK_ESCAPE:
 							return 0;
 						case SDLK_UP:
-							;
+							playerJump(game);
 							break;
 					}
 					break;
@@ -38,17 +38,22 @@ bool getEvents(game * game){
 	const Uint8 *state = SDL_GetKeyboardState(NULL);
 
 	if(state[SDL_SCANCODE_RIGHT]){
-		playerSpeed(game, RIGHT);
+		playerSetSpeed(game, RIGHT);
 		game->player.direction = RIGHT;
 	}
 
 	if(state[SDL_SCANCODE_LEFT]){
-		playerSpeed(game, LEFT);
+		playerSetSpeed(game, LEFT);
 		game->player.direction = LEFT;
 	}
-	printf("Speed: %g\n",game->player.speed.x);
-	movePlayer(game);
-	slowPlayer(game);
+
+	if(state[SDL_SCANCODE_UP] &&
+			game->player.status[AIR]){
+		playerJump(game);
+	}
+
+	playerMove(game);
+	playerSlow(game);
 	// SDL_HasIntersection
 	return 1;
 }
