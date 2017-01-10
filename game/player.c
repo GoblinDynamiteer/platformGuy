@@ -42,3 +42,16 @@ void playerSlow(game * game){
 	}
 }
 
+void playerJump(game * game){
+	if(!game->player.status[AIR]){
+		/*	 Default jump strength	*/
+		game->player.speed.y = JUMP_STR * -1;
+
+		/*	 Set AIR status ON	*/
+		game->player.status[AIR] = 1;
+	}
+
+	game->player.speed.y += JUMP_ACC;
+
+}
+
