@@ -20,7 +20,7 @@ bool loadGame(game * game){
 	game->player.status[IDLE] = 1;
 	game->player.direction = RIGHT;
 
-	/*	 Frames in each animation.	*/
+	/*	 Frames in each sprite sheet.	*/
 	game->player.maxFrames[IDLE] = 17;
 	game->player.maxFrames[AIR] = 2;
 	game->player.maxFrames[RUN] = 14;
