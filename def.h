@@ -66,10 +66,12 @@ void renderGame(game * game);
 void drawPlayer(game * game);
 
 /*	 player.c	*/
-void playerSpeed(game * game, bool direction);
-void movePlayer(game * game);
-void slowPlayer(game * game);
 bool getPlayerDirection(game * game);
+void playerSetSpeed(game * game, bool direction);
+void playerMove(game * game);
+void playerSlow(game * game);
+void playerJump(game * game);
+
 /*	 world.c	*/
 bool checkCollision(game * game);
 

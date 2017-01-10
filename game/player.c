@@ -7,7 +7,7 @@
 
 #include "..\def.h"
 
-void playerSpeed(game * game, bool direction){
+void playerSetSpeed(game * game, bool direction){
 	game->player.status[RUN] = 1;
 
 	if(direction == LEFT){
@@ -24,11 +24,11 @@ void playerSpeed(game * game, bool direction){
 	}
 }
 
-void movePlayer(game * game){
+void playerMove(game * game){
 	game->player.rect.x += game->player.speed.x;
 }
 
-void slowPlayer(game * game){
+void playerSlow(game * game){
 	if(game->player.speed.x > 0){
 		game->player.speed.x -= RUN_FRIC;
 	}
