@@ -25,23 +25,30 @@ void drawPlayer(game * game){
 	SDL_Rect dest = {0,0,0,0};
 
 	/*	 Gets height and width from image	*/
-	SDL_QueryTexture(game->player.texture[IDLE], NULL, NULL, &src.w, &src.h);
+	SDL_QueryTexture(game->player.texture[AIR], NULL, NULL, &src.w, &src.h);
 
 	/*	 Get correct frame in sprite sheet	*/
-	src.w /= game->player.maxFrames[IDLE];
+	src.w /= game->player.maxFrames[AIR];
 	src.x = game->player.rect.x;
 	src.x = src.w * 1;
+
+	/*	 To player all textures at same lower position	*/
+	int heightDifference = game->player.rect.h - src.h;
 
 	/*	 Set destination rectangle values, middle of player rectangle	*/
 	dest.w = src.w;
 	dest.h = src.h;
-	dest.x = game->player.rect.x - game->player.rect.w /2;
-	dest.y = game->player.rect.y - game->player.rect.h /2;
+	dest.x = game->player.rect.x;
+	dest.y = game->player.rect.y + heightDifference;
+
+	/*	 Fill player rectangle with white - for debugging	*/
+	SDL_SetRenderDrawColor(game->renderer, 255, 255, 255, 255);
+	SDL_RenderFillRect(game->renderer, &game->player.rect);
 
 	/*	 Draw part of texture in src rectangle to dest rectangle	*/
 	SDL_RenderCopyEx(
 			game->renderer,
-			game->player.texture[IDLE],
+			game->player.texture[AIR],
 			&src,
 			&dest,
 			0.0,
