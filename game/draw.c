@@ -66,7 +66,21 @@ void drawWorld(game * game){
 	/*	 White colour	*/
 	SDL_SetRenderDrawColor(game->renderer, 255, 255, 255, 255);
 
-	SDL_RenderFillRect(game->renderer, &game->ground.rect);
+	int w, h;
+	SDL_QueryTexture(game->ground.texture, NULL, NULL, &w, &h);
+
+	for(int x = game->ground.rect.x; x < game->ground.rect.w; x += w){
+		SDL_Rect dest = {x, game->ground.rect.y - game->ground.offset ,w ,h};
+		/*	 Draw part of texture in src rectangle to dest rectangle	*/
+		SDL_RenderCopy(
+				game->renderer,
+				game->ground.texture,
+				NULL,
+				&dest
+		);
+	}
+
+	//SDL_RenderFillRect(game->renderer, &game->ground.rect);
 	SDL_RenderFillRect(game->renderer, &game->pillar.rect);
 }
 

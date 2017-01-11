@@ -61,6 +61,7 @@ typedef struct worldPieces{
 	SDL_Rect rect;
 	bool obstacle;
 	SDL_Texture * texture;
+	int offset;
 }world;
 
 

@@ -104,4 +104,6 @@ void loadWorld(game * game){
 			SDL_CreateTextureFromSurface(game->renderer, surface);
 	SDL_FreeSurface(surface);
 
+	game->ground.offset = 30;
+
 }
