@@ -30,7 +30,7 @@ bool loadGame(game * game){
 	game->player.maxFrames[ATK1] = 13;
 
 	/*	 Player starting coordinates	*/
-	game->player.rect.x = WINDOW_WIDTH/2;
+	game->player.rect.x = WINDOW_WIDTH/2-200;
 	game->player.rect.y = WINDOW_HEIGHT/2;
 
 	/*	 Player rectangle size	*/
