@@ -79,6 +79,12 @@ int determineTexture(game * game){
 	else if(game->player.status[AIR]){
 		return AIR;
 	}
+	else if(game->player.status[DUCK]){
+		return DUCK;
+	}
+	else if(game->player.status[SKID]){
+		return SKID;
+	}
 	else if(game->player.status[RUN]){
 		return RUN;
 	}
