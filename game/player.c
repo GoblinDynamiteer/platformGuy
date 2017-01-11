@@ -8,7 +8,6 @@
 #include "..\def.h"
 
 void playerSetSpeed(game * game, bool direction){
-	game->player.status[RUN] = 1;
 
 	if(direction == LEFT){
 		game->player.speed.x -= RUN_ACC;
@@ -25,10 +24,12 @@ void playerSetSpeed(game * game, bool direction){
 }
 
 void playerMove(game * game){
+
+	/*	 Horizontal movement	*/
 	game->player.rect.x += game->player.speed.x;
 	if(checkCollision(game)){
-		game->player.speed.x = 0;
-		setIdleStatus(game);
+		game->player.speed.x = 0.0;
+
 		while(checkCollision(game)){
 			if(game->player.direction == RIGHT){
 				game->player.rect.x--;
@@ -40,6 +41,7 @@ void playerMove(game * game){
 		}
 	}
 
+	/*	 Vertical movement	*/
 	game->player.rect.y += game->player.speed.y;
 	if(checkCollision(game)){
 		game->player.status[AIR] = FALSE;
@@ -85,7 +87,7 @@ void playerJump(game * game){
 	}
 
 	if(game->timer % 4 == 0){
-		//printf("Acc speed y: %g\n");
+
 	}
 	game->player.speed.y -= JUMP_ACC;
 	if(game->player.speed.y >= MAX_JUMP_SPEED){
