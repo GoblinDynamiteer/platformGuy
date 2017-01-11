@@ -7,7 +7,9 @@
 
 #include "..\def.h"
 
+/*	 Draws the game	*/
 void renderGame(game * game){
+	/*	 One colour background	*/
 	SDL_SetRenderDrawColor(game->renderer, 0, 0, 255, 255);
 	SDL_RenderClear(game->renderer);
 
@@ -18,6 +20,7 @@ void renderGame(game * game){
 	SDL_RenderPresent(game->renderer);
 }
 
+/*	 Draws the player	*/
 void drawPlayer(game * game){
 
 	/*	 Source and destination rectangles	*/
@@ -62,16 +65,18 @@ void drawPlayer(game * game){
 
 }
 
+/*	 Draws world art	*/
 void drawWorld(game * game){
 	/*	 White colour	*/
 	SDL_SetRenderDrawColor(game->renderer, 255, 255, 255, 255);
 
+	/*	 Height and width for destination rectangle	*/
 	int w, h;
 	SDL_QueryTexture(game->ground.texture, NULL, NULL, &w, &h);
 
+	/*	 Renders texture over ground rectangle	*/
 	for(int x = game->ground.rect.x; x < game->ground.rect.w; x += w){
 		SDL_Rect dest = {x, game->ground.rect.y - game->ground.offset ,w ,h};
-		/*	 Draw part of texture in src rectangle to dest rectangle	*/
 		SDL_RenderCopy(
 				game->renderer,
 				game->ground.texture,
@@ -80,10 +85,11 @@ void drawWorld(game * game){
 		);
 	}
 
-	//SDL_RenderFillRect(game->renderer, &game->ground.rect);
+	/*	 Placeholder 	*/
 	SDL_RenderFillRect(game->renderer, &game->pillar.rect);
 }
 
+/*	 Determines what player texture to show	*/
 int determineTexture(game * game){
 	if(game->player.status[ATK1]){
 		return ATK1;
@@ -110,6 +116,7 @@ int determineTexture(game * game){
 	return 0;
 }
 
+/*	 Determines what frame in player animation sprite to show	*/
 int getFrame(game * game, int texture){
 	if(game->timer % FRAME_UPDATE_SPEED == 0){
 		game->player.currentFrame[texture]++;

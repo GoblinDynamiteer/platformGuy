@@ -8,7 +8,9 @@
 #include "..\def.h"
 
 bool getEvents(game * game){
+	/*	 Timer to keep track of animation frame changes etc.	*/
 	game->timer++;
+
 	SDL_Event event;
 		while(SDL_PollEvent(&event)){
 			switch(event.type){
@@ -59,6 +61,7 @@ bool getEvents(game * game){
 	/*	 Gets key states	*/
 	const Uint8 *state = SDL_GetKeyboardState(NULL);
 
+	/*	 Move player, if not ducking	*/
 	if(!game->player.status[DUCK]){
 		if(state[SDL_SCANCODE_RIGHT]){
 			setRunStatus(game);
@@ -73,6 +76,7 @@ bool getEvents(game * game){
 		}
 	}
 
+	/*	 Long jump when up key keeps pressed down	*/
 	if(state[SDL_SCANCODE_UP] &&
 			game->player.status[AIR]){
 		playerJump(game);

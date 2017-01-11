@@ -7,6 +7,7 @@
 
 #include "..\def.h"
 
+/*	 Increase player vertical speed, until max	*/
 void playerSetSpeed(game * game, bool direction){
 
 	if(direction == LEFT){
@@ -23,6 +24,7 @@ void playerSetSpeed(game * game, bool direction){
 	}
 }
 
+/*	 Move player in XY, according to speed	*/
 void playerMove(game * game){
 
 	/*	 Horizontal movement	*/
@@ -51,6 +53,7 @@ void playerMove(game * game){
 	}
 }
 
+/*	 Affect player with gravity and friction	*/
 void playerSlow(game * game){
 
 	/*	 Affect player with gravity	*/
@@ -77,6 +80,7 @@ void playerSlow(game * game){
 	}
 }
 
+/*	 Makes player jump	*/
 void playerJump(game * game){
 	if(!game->player.status[AIR]){
 		/*	 Default jump strength	*/
@@ -86,12 +90,9 @@ void playerJump(game * game){
 		game->player.status[AIR] = 1;
 	}
 
-	if(game->timer % 4 == 0){
-
-	}
 	game->player.speed.y -= JUMP_ACC;
-	if(game->player.speed.y >= MAX_JUMP_SPEED){
-		game->player.speed.y = MAX_JUMP_SPEED;
+	if(fabs(game->player.speed.y) >= MAX_JUMP_SPEED){
+		game->player.speed.y = MAX_JUMP_SPEED * -1;
 	}
 
 }

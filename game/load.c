@@ -30,7 +30,7 @@ bool loadGame(game * game){
 	game->player.maxFrames[ATK1] = 13;
 
 	/*	 Player starting coordinates	*/
-	game->player.rect.x = WINDOW_WIDTH/2-200;
+	game->player.rect.x = WINDOW_WIDTH/2 - 200;
 	game->player.rect.y = WINDOW_HEIGHT/2;
 
 	/*	 Player rectangle size	*/
@@ -48,9 +48,10 @@ bool loadGame(game * game){
 	return 1;
 }
 
+
 bool loadTextures(game * game){
 
-	/*	Load player textures.	*/
+	/*	Load player art.	*/
 	/*	index: IDLE, AIR, RUN, SKID, DUCK, ATK1, ATK2 */
 	const char * imageFiles[] = {
 			"art/player/girl_idle.png",
@@ -65,7 +66,7 @@ bool loadTextures(game * game){
 	/*	 Temporary surface	*/
 	SDL_Surface * surface = NULL;
 
-	/*	 Apply image files to player textures	*/
+	/*	 Player textures	*/
 	for(int i = 0; i < STATUS_MAX; i++){
 		surface = IMG_Load(imageFiles[i]);
 		if(surface == NULL){
@@ -75,10 +76,22 @@ bool loadTextures(game * game){
 				SDL_CreateTextureFromSurface(game->renderer, surface);
 	}
 
+	/*	 World textures	*/
+	surface = IMG_Load("art/levels/ground/grass_stone_small_gradient.png");
+	if(surface == NULL){
+		printf("Could not image file for ground!\n");
+	}
+
+	/*	 Set ground texture	*/
+	game->ground.texture =
+			SDL_CreateTextureFromSurface(game->renderer, surface);
+	SDL_FreeSurface(surface);
+
 	SDL_FreeSurface(surface);
 	return 1;
 }
 
+/*	 Sets data for world	*/
 void loadWorld(game * game){
 	/*	 Ground rectangle	*/
 	game->ground.rect.x = 0;
@@ -91,18 +104,6 @@ void loadWorld(game * game){
 	game->pillar.rect.h = 300;
 	game->pillar.rect.x = WINDOW_WIDTH / 2 + 200;
 	game->pillar.rect.y = game->ground.rect.y - game->pillar.rect.h;
-
-	/*	 Temporary surface	*/
-	SDL_Surface * surface = NULL;
-	surface = IMG_Load("art/levels/ground/grass_stone_small_gradient.png");
-	if(surface == NULL){
-		printf("Could not image file for ground!\n");
-	}
-
-	/*	 Set ground texture	*/
-	game->ground.texture =
-			SDL_CreateTextureFromSurface(game->renderer, surface);
-	SDL_FreeSurface(surface);
 
 	game->ground.offset = 30;
 

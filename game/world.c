@@ -8,6 +8,7 @@
 #include "..\def.h"
 
 bool checkCollision(game * game){
+
 	/*	 Checks for intersection between two rectangles.	*/
 	if(SDL_HasIntersection(
 			&game->player.rect,
