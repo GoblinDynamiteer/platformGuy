@@ -86,7 +86,8 @@ int determineTexture(game * game){
 	else if(game->player.status[SKID]){
 		return SKID;
 	}
-	else if(game->player.status[RUN]){
+	else if(game->player.status[RUN] &&
+		!game->player.status[IDLE]){
 		return RUN;
 	}
 	else{
