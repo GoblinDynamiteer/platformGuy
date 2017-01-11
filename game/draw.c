@@ -42,7 +42,7 @@ void drawPlayer(game * game){
 	/*	 Set destination rectangle values	*/
 	dest.w = src.w;
 	dest.h = src.h;
-	dest.x = game->player.rect.x + widthDifference;
+	dest.x = game->player.rect.x + widthDifference / 2;
 	dest.y = game->player.rect.y + heightDifference;
 
 	/*	 Fill player rectangle with white - for debugging	*/
