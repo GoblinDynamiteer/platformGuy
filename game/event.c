@@ -47,6 +47,7 @@ bool getEvents(game * game){
 							break;
 						case SDLK_LEFT:
 						case SDLK_RIGHT:
+							game->player.status[RUN] = FALSE;
 							if(fabs(game->player.speed.x) > MAX_SPEED - 1){
 								game->player.status[SKID] = TRUE;
 							}
