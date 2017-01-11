@@ -100,3 +100,7 @@ void setIdleStatus(game * game){
 	game->player.status[IDLE] = 1;
 }
 
+void setRunStatus(game * game){
+	game->player.status[RUN] = 1;
+	game->player.status[IDLE] = 0;
+}

@@ -32,7 +32,12 @@ bool getEvents(game * game){
 						case SDLK_DOWN:
 							game->player.status[DUCK] = TRUE;
 							break;
-					}
+						case SDLK_LEFT:
+						case SDLK_RIGHT:
+							setRunStatus(game);
+							break;
+						}
+
 					break;
 				/*	 A key has been released	*/
 				case SDL_KEYUP:
@@ -55,11 +60,13 @@ bool getEvents(game * game){
 
 	if(!game->player.status[DUCK]){
 		if(state[SDL_SCANCODE_RIGHT]){
+			setRunStatus(game);
 			playerSetSpeed(game, RIGHT);
 			game->player.direction = RIGHT;
 		}
 
 		if(state[SDL_SCANCODE_LEFT]){
+			setRunStatus(game);
 			playerSetSpeed(game, LEFT);
 			game->player.direction = LEFT;
 		}
