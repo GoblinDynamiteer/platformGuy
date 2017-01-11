@@ -3,10 +3,12 @@ bin/
 tmp/
 Debug/
 Release/
+GCC/
 *.tmp
 *.bak
 *.swp
 *~.nib
+*.exe
 local.properties
 .settings/
 .loadpath
