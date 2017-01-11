@@ -94,6 +94,7 @@ void playerSetSpeed(game * game, bool direction);
 void playerMove(game * game);
 void playerSlow(game * game);
 void playerJump(game * game);
+void setIdleStatus(game * game);
 
 /*	 world.c	*/
 bool checkCollision(game * game);

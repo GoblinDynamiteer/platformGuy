@@ -27,7 +27,8 @@ void playerSetSpeed(game * game, bool direction){
 void playerMove(game * game){
 	game->player.rect.x += game->player.speed.x;
 	if(checkCollision(game)){
-		game->player.status[RUN] = FALSE;
+		game->player.speed.x = 0;
+		setIdleStatus(game);
 		while(checkCollision(game)){
 			if(game->player.direction == RIGHT){
 				game->player.rect.x--;
@@ -70,8 +71,7 @@ void playerSlow(game * game){
 	if((game->player.speed.x <= 0 && game->player.direction == RIGHT) ||
 			(game->player.speed.x >= 0 && game->player.direction == LEFT)){
 				game->player.speed.x = 0.0;
-				game->player.status[RUN] = 0;
-				game->player.status[SKID] = 0;
+				setIdleStatus(game);
 	}
 }
 
@@ -92,5 +92,11 @@ void playerJump(game * game){
 		game->player.speed.y = MAX_JUMP_SPEED;
 	}
 
+}
+
+void setIdleStatus(game * game){
+	game->player.status[RUN] = 0;
+	game->player.status[SKID] = 0;
+	game->player.status[IDLE] = 1;
 }
 
