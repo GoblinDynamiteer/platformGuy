@@ -70,13 +70,9 @@ bool getEvents(game * game){
 		playerJump(game);
 	}
 
-	if(game->timer % 4 == 0){
-		printf("Speed Up: %g\n", game->player.speed.y);
-	}
-
-	playerMove(game);
 	playerSlow(game);
-	// SDL_HasIntersection
+	playerMove(game);
+
 	return 1;
 }
 
