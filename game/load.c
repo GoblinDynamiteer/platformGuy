@@ -34,8 +34,8 @@ bool loadGame(game * game){
 	game->player.rect.y = WINDOW_HEIGHT/2;
 
 	/*	 Player rectangle size	*/
-	game->player.rect.w = 195;
-	game->player.rect.h = 280;
+	game->player.rect.w = 130;
+	game->player.rect.h = 260;
 
 	/*	 Player velocity	*/
 	game->player.speed.x = 0.0;
