@@ -37,11 +37,12 @@ void drawPlayer(game * game){
 
 	/*	 Set all textures at same lower position	*/
 	int heightDifference = game->player.rect.h - src.h;
+	int widthDifference = game->player.rect.w - src.w;
 
-	/*	 Set destination rectangle values, middle of player rectangle	*/
+	/*	 Set destination rectangle values	*/
 	dest.w = src.w;
 	dest.h = src.h;
-	dest.x = game->player.rect.x;
+	dest.x = game->player.rect.x + widthDifference;
 	dest.y = game->player.rect.y + heightDifference;
 
 	/*	 Fill player rectangle with white - for debugging	*/
