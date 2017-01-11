@@ -85,7 +85,7 @@ void playerJump(game * game){
 	}
 
 	if(game->timer % 4 == 0){
-		printf("Acc speed Up: %g\n");
+		//printf("Acc speed y: %g\n");
 	}
 	game->player.speed.y -= JUMP_ACC;
 	if(game->player.speed.y >= MAX_JUMP_SPEED){

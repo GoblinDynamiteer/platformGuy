@@ -69,7 +69,7 @@ bool loadTextures(game * game){
 	for(int i = 0; i < STATUS_MAX; i++){
 		surface = IMG_Load(imageFiles[i]);
 		if(surface == NULL){
-			printf("Could not image file!\n");
+			printf("Could not image file for player!\n");
 		}
 		game->player.texture[i] =
 				SDL_CreateTextureFromSurface(game->renderer, surface);
@@ -80,13 +80,13 @@ bool loadTextures(game * game){
 }
 
 void loadWorld(game * game){
-	/*	 Draw ground	*/
+	/*	 Ground rectangle	*/
 	game->ground.rect.x = 0;
 	game->ground.rect.y = 900;
 	game->ground.rect.w = WINDOW_WIDTH;
 	game->ground.rect.h = WINDOW_HEIGHT-game->ground.rect.y;
 
-	/*	 Draw obstacle	*/
+	/*	 Obstacle rectangle	*/
 	game->pillar.rect.w = 200;
 	game->pillar.rect.h = 300;
 	game->pillar.rect.x = WINDOW_WIDTH / 2 + 200;

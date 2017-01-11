@@ -102,7 +102,7 @@ int getFrame(game * game, int texture){
 			game->player.maxFrames[texture] - 1){
 				game->player.currentFrame[texture] = 0;
 		}
-		printf("Drawing frame: %d of %d \n", game->player.currentFrame[texture] +1, game->player.maxFrames[texture]);
+
 	}
 
 	return game->player.currentFrame[texture];
