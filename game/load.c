@@ -94,10 +94,12 @@ void loadWorld(game * game){
 
 	/*	 Temporary surface	*/
 	SDL_Surface * surface = NULL;
-	surface = IMG_Load("art/ground/grass_stone_small_gradient.png");
+	surface = IMG_Load("art/levels/ground/grass_stone_small_gradient.png");
 	if(surface == NULL){
-		printf("Could not image file!\n");
+		printf("Could not image file for ground!\n");
 	}
+
+	/*	 Set ground texture	*/
 	game->ground.texture =
 			SDL_CreateTextureFromSurface(game->renderer, surface);
 	SDL_FreeSurface(surface);
