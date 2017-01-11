@@ -66,6 +66,7 @@ void drawWorld(game * game){
 	SDL_SetRenderDrawColor(game->renderer, 255, 255, 255, 255);
 
 	SDL_RenderFillRect(game->renderer, &game->ground.rect);
+	SDL_RenderFillRect(game->renderer, &game->pillar.rect);
 }
 
 int determineTexture(game * game){

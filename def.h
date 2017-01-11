@@ -70,6 +70,7 @@ typedef struct game{
 	player player;
 	Uint64 timer;
 	world ground;
+	world pillar;
 }game;
 
 /*	 Functions	*/

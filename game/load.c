@@ -80,9 +80,26 @@ bool loadTextures(game * game){
 }
 
 void loadWorld(game * game){
+	/*	 Draw ground	*/
 	game->ground.rect.x = 0;
 	game->ground.rect.y = 900;
 	game->ground.rect.w = WINDOW_WIDTH;
 	game->ground.rect.h = WINDOW_HEIGHT-game->ground.rect.y;
+
+	/*	 Draw obstacle	*/
+	game->pillar.rect.w = 200;
+	game->pillar.rect.h = 300;
+	game->pillar.rect.x = WINDOW_WIDTH / 2 + 200;
+	game->pillar.rect.y = game->ground.rect.y - game->pillar.rect.h;
+
+	/*	 Temporary surface	*/
+	SDL_Surface * surface = NULL;
+	surface = IMG_Load("art/ground/grass_stone_small_gradient.png");
+	if(surface == NULL){
+		printf("Could not image file!\n");
+	}
+	game->ground.texture =
+			SDL_CreateTextureFromSurface(game->renderer, surface);
+	SDL_FreeSurface(surface);
 
 }
